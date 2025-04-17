@@ -1,0 +1,11 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+
+Name=IceBox
+Comment=PDF Creator
+Categories=Utility;Java;
+
+Icon=com.github.IceBox
+Exec=icebox
+Terminal=false

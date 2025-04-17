@@ -1,4 +1,4 @@
-app-id: ir.wingedsun.IceBox
+app-id: com.github.IceBox
 runtime: org.freedesktop.Platform
 runtime-version: '23.08'
 sdk: org.freedesktop.Sdk
@@ -25,5 +25,6 @@ modules:
         path: icebox.jar
       - type: file
         path: run.sh
-      - type: file
-        path: bellsoft-jre21.0.6+10-linux-amd64-full.tar.gz
+      - type: archive
+        url: https://download.bell-sw.com/java/21.0.7+9/bellsoft-jre21.0.7+9-linux-amd64-full.tar.gz
+        sha256: badcf6af7c4b2d4a6b1b180d15d79c33d0e2d213ba7b3c0972ac9dd514b0fa9e
