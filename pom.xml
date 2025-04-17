@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>ir.wingedsun</groupId>
+    <groupId>com.github</groupId>
     <artifactId>IceBox</artifactId>
     <version>1.0</version>
     <name>IceBox</name>
@@ -98,7 +98,7 @@
                         <!-- Default configuration for running with: mvn clean javafx:run -->
                         <id>default-cli</id>
                         <configuration>
-                            <mainClass>ir.wingedsun.icebox/ir.wingedsun.icebox.HelloApplication</mainClass>
+                            <mainClass>com.github.icebox/com.github.icebox.HelloApplication</mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>
                             <jlinkImageName>app</jlinkImageName>
@@ -158,7 +158,7 @@
                         </goals>
                         <configuration>
                             <target>
-                                <copy file="${project.build.directory}/${artifactId}-${version}-jar-with-dependencies.jar"
+                                <copy file="${project.build.directory}/${project.artifactId}-${project.version}-jar-with-dependencies.jar"
                                       tofile="/home/mohammad/Documents/flatpak/icebox.jar" />
                             </target>
                         </configuration>
@@ -182,7 +182,7 @@
                     <input>${project.build.directory}</input>
                     <destination>${project.build.directory}</destination>
                     <mainJar>${project.artifactId}-${project.version}.jar</mainJar>
-                    <icon>${project.basedir}/src/main/resources/ir/wingedsun/icebox/asset/logo.png</icon>
+                    <icon>${project.basedir}/src/main/resources/com/github/icebox/asset/logo.png</icon>
                     <name>IceBox</name>
                     <mainClass>com.github.icebox.App</mainClass>
                     <linuxShortcut>true</linuxShortcut>
@@ -247,7 +247,7 @@
                                 <fileVersion>1.0.0.0</fileVersion>
                                 <txtFileVersion>1.0</txtFileVersion>
                                 <fileDescription>The PDF Creator</fileDescription>
-                                <copyright>All rights are reserved by wingedsun.ir</copyright>
+                                <copyright>GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007</copyright>
                                 <productVersion>1.0.0.0</productVersion>
                                 <txtProductVersion>1.0</txtProductVersion>
                                 <productName>${app.name}</productName>
