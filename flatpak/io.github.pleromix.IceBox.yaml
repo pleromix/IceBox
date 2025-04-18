@@ -21,7 +21,8 @@ modules:
       - install -Dm644 io.github.pleromix.IceBox.png /app/share/icons/hicolor/128x128/apps/io.github.pleromix.IceBox.png
     sources:
       - type: file
-        path: icebox.jar
+        url: https://github.com/pleromix/icebox/releases/download/v1.0.0/icebox.jar
+        sha256: c74759f39c63b558c921128c0e1fc8f20dade815f0981d69769d356dd707374a
       - type: file
         path: run.sh
       - type: file
@@ -30,6 +31,10 @@ modules:
         path: io.github.pleromix.IceBox.desktop
       - type: file
         path: io.github.pleromix.IceBox.png
+      - type: git
+        url: https://github.com/pleromix/icebox.git
+        tag: v1.0.0
       - type: archive
         url: https://download.bell-sw.com/java/21.0.6+10/bellsoft-jre21.0.6+10-linux-amd64-full.tar.gz
         sha256: badcf6af7c4b2d4a6b1b180d15d79c33d0e2d213ba7b3c0972ac9dd514b0fa9e
+
