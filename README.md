@@ -1,4 +1,4 @@
-# IceBox
+<img alt="Logo" src="https://raw.githubusercontent.com/pleromix/IceBox/refs/heads/main/src/main/resources/com/github/icebox/asset/logo-vector-with-title.png" width="275"/>
 
 ![License](https://img.shields.io/github/license/pleromix/icebox)
 ![Flatpak](https://img.shields.io/badge/flatpak-available-blue)
