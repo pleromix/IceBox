@@ -140,7 +140,7 @@ public final class MessageBox {
         //overlay.getChildren().add(box);
 
 
-        scene.getStylesheets().add(Objects.requireNonNull(MessageBox.class.getResource("/io/github/icebox/css/app.css")).toExternalForm());
+        scene.getStylesheets().add(Objects.requireNonNull(MessageBox.class.getResource("/io/github/pleromix/icebox/css/app.css")).toExternalForm());
 
         scene.setOnMousePressed(pressedEvent -> {
             scene.setOnMouseDragged(draggedEvent -> {

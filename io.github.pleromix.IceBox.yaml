@@ -30,7 +30,8 @@ modules:
       - install -Dm644 io.github.pleromix.IceBox.svg /app/share/icons/hicolor/scalable/apps/io.github.pleromix.IceBox.svg
     sources:
       - type: file
-        path: icebox.jar
+        url: https://github.com/pleromix/IceBox/releases/download/v1.0.0/icebox.jar
+        sha256: 797eb7dab892dad090a39e336075f9548ad0eab9dc9bd695700b6e62b850b233
       - type: file
         path: run.sh
       - type: file
