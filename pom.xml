@@ -4,9 +4,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.github</groupId>
+    <groupId>io.github.pleromix</groupId>
     <artifactId>IceBox</artifactId>
-    <version>1.0</version>
+    <version>1.0.0</version>
     <name>IceBox</name>
 
     <properties>
@@ -90,62 +90,40 @@
                 </configuration>
             </plugin>
             <plugin>
-                <groupId>org.openjfx</groupId>
-                <artifactId>javafx-maven-plugin</artifactId>
-                <version>0.0.8</version>
-                <executions>
-                    <execution>
-                        <!-- Default configuration for running with: mvn clean javafx:run -->
-                        <id>default-cli</id>
-                        <configuration>
-                            <mainClass>com.github.icebox/com.github.icebox.HelloApplication</mainClass>
-                            <launcher>app</launcher>
-                            <jlinkZipName>app</jlinkZipName>
-                            <jlinkImageName>app</jlinkImageName>
-                            <noManPages>true</noManPages>
-                            <stripDebug>true</stripDebug>
-                            <noHeaderFiles>true</noHeaderFiles>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <version>3.7.0</version>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.6.0</version>
                 <executions>
                     <execution>
                         <phase>package</phase>
                         <goals>
-                            <goal>single</goal>
+                            <goal>shade</goal>
                         </goals>
                         <configuration>
-                            <archive>
-                                <manifest>
-                                    <mainClass>com.github.icebox.App</mainClass>
-                                    <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
-                                </manifest>
-                                <compress>true</compress>
-                            </archive>
-                            <descriptorRefs>
-                                <descriptorRef>jar-with-dependencies</descriptorRef>
-                            </descriptorRefs>
+                            <transformers>
+                                <transformer
+                                        implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <mainClass>io.github.pleromix.icebox.App</mainClass>
+                                    <manifestEntries>
+                                        <Implementation-Version>${project.version}</Implementation-Version>
+                                        <Implementation-Title>${project.name}</Implementation-Title>
+                                    </manifestEntries>
+                                </transformer>
+                            </transformers>
+                            <filters>
+                                <filter>
+                                    <artifact>org.openpnp:opencv</artifact>
+                                    <excludes>
+                                        <exclude>**/windows/**</exclude>
+                                        <exclude>**/osx/**</exclude>
+                                    </excludes>
+                                </filter>
+                            </filters>
                         </configuration>
                     </execution>
                 </executions>
             </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <version>3.4.2</version>
-                <configuration>
-                    <archive>
-                        <manifestEntries>
-                            <Implementation-Version>${project.version}</Implementation-Version>
-                        </manifestEntries>
-                    </archive>
-                </configuration>
-            </plugin>
+            <!--
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-antrun-plugin</artifactId>
@@ -161,99 +139,6 @@
                                 <copy file="${project.build.directory}/${project.artifactId}-${project.version}-jar-with-dependencies.jar"
                                       tofile="${project.basedir}/flatpak/icebox.jar" />
                             </target>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-<!--
-            <plugin>
-                <groupId>org.panteleyev</groupId>
-                <artifactId>jpackage-maven-plugin</artifactId>
-                <version>1.6.3</version>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>jpackage</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <input>${project.build.directory}</input>
-                    <destination>${project.build.directory}</destination>
-                    <mainJar>${project.artifactId}-${project.version}.jar</mainJar>
-                    <icon>${project.basedir}/src/main/resources/com/github/icebox/asset/logo.png</icon>
-                    <name>IceBox</name>
-                    <mainClass>com.github.icebox.App</mainClass>
-                    <linuxShortcut>true</linuxShortcut>
-                    <arguments>
-                        <argument>&#45;&#45;type=deb</argument>
-                        <argument>&#45;&#45;linux-package-name=icebox</argument>
-                        <argument>&#45;&#45;linux-deb-maintainer=c.mohammad.faraji@gmail.com</argument>
-                        <argument>&#45;&#45;linux-menu-group=Utility</argument>
-                    </arguments>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <version>3.6.0</version>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                        <configuration>
-                            <transformers>
-                                <transformer
-                                        implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>com.github.icebox.App</mainClass>
-                                </transformer>
-                            </transformers>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>com.akathist.maven.plugins.launch4j</groupId>
-                <artifactId>launch4j-maven-plugin</artifactId>
-                <version>2.5.3</version>
-                <executions>
-                    <execution>
-                        <id>l4j-clui</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>launch4j</goal>
-                        </goals>
-                        <configuration>
-                            <headerType>gui</headerType>
-                            <outfile>
-                                ${project.build.directory}/${project.artifactId}-${project.version}-jar-with-dependencies.exe
-                            </outfile>
-                            <jar>
-                                ${project.build.directory}/${project.artifactId}-${project.version}-jar-with-dependencies.jar
-                            </jar>
-                            <errTitle>TitanApp</errTitle>
-                            <classPath>
-                                <mainClass>com.github.icebox.App</mainClass>
-                                <preCp>anything</preCp>
-                            </classPath>
-                            <jre>
-                                <path>jre-21.0.6-full/bin</path>
-                                <minVersion>${api.version}</minVersion>
-                            </jre>
-                            <versionInfo>
-                                <fileVersion>1.0.0.0</fileVersion>
-                                <txtFileVersion>1.0</txtFileVersion>
-                                <fileDescription>The PDF Creator</fileDescription>
-                                <copyright>GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007</copyright>
-                                <productVersion>1.0.0.0</productVersion>
-                                <txtProductVersion>1.0</txtProductVersion>
-                                <productName>${app.name}</productName>
-                                <internalName>${app.name}</internalName>
-                                <originalFilename>${app.name}.exe</originalFilename>
-                            </versionInfo>
                         </configuration>
                     </execution>
                 </executions>

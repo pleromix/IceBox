@@ -1,4 +1,4 @@
-module com.github.icebox {
+module io.github.pleromix.icebox {
     requires java.desktop;
     requires javafx.controls;
     requires javafx.fxml;
@@ -10,10 +10,10 @@ module com.github.icebox {
     requires org.apache.pdfbox;
     requires static lombok;
 
-    opens com.github.icebox to javafx.fxml;
-    opens com.github.icebox.controller to javafx.fxml;
+    opens io.github.pleromix.icebox to javafx.fxml;
+    opens io.github.pleromix.icebox.controller to javafx.fxml;
 
-    exports com.github.icebox;
-    exports com.github.icebox.controller;
-    exports com.github.icebox.dto;
+    exports io.github.pleromix.icebox;
+    exports io.github.pleromix.icebox.controller;
+    exports io.github.pleromix.icebox.dto;
 }
