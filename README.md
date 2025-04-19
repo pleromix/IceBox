@@ -1,4 +1,4 @@
-<img alt="Logo" src="https://raw.githubusercontent.com/pleromix/IceBox/refs/heads/main/src/main/resources/com/github/icebox/asset/logo-vector-with-title.svg" width="275"/>
+<img alt="Logo" src="https://raw.githubusercontent.com/pleromix/IceBox/0ad966028edeaca6f6acc244f4dc5d7da13cef26/src/main/resources/io/github/pleromix/icebox/asset/logo-vector-with-title.svg" width="275"/>
 
 ![License](https://img.shields.io/github/license/pleromix/icebox)
 ![Flatpak](https://img.shields.io/badge/flatpak-available-blue)
