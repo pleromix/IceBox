@@ -20,7 +20,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<StackPane fx:id="root" prefHeight="600.0" prefWidth="1300.0" stylesheets="@css/app.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.github.pleromix.icebox.controller.AppController">
+<StackPane fx:id="root" prefHeight="600.0" prefWidth="1300.0" stylesheets="@css/app.css" xmlns="http://javafx.com/javafx/20" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.github.pleromix.icebox.controller.AppController">
    <children>
       <ScrollPane fitToHeight="true" fitToWidth="true">
          <content>
