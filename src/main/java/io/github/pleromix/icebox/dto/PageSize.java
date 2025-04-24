@@ -13,6 +13,7 @@ import java.util.Objects;
 @Setter
 @EqualsAndHashCode
 public class PageSize {
+
     private String name;
     private PDRectangle rectangle;
 

@@ -89,7 +89,7 @@ public class Job extends AnchorPane {
         final var icon = new Region();
         final var tooltip = new Tooltip("Cancel the job");
 
-        setPrefHeight(38.0D);
+        setPrefHeight(42.0D);
 
         statusIcon.setMinWidth(Region.USE_PREF_SIZE);
         statusIcon.setMinHeight(Region.USE_PREF_SIZE);
@@ -131,6 +131,7 @@ public class Job extends AnchorPane {
         timeline.getKeyFrames().add(new KeyFrame(Duration.millis(350), new KeyValue(statusIcon.scaleXProperty(), 1.0D), new KeyValue(statusIcon.scaleYProperty(), 1.0D), new KeyValue(statusIcon.prefWidthProperty(), 18.0D), new KeyValue(statusIcon.prefHeightProperty(), 18.0D), new KeyValue(titleLabel.paddingProperty(), new Insets(0.0D, 0.0D, 0.0D, 8.0D), Interpolator.EASE_OUT)));
         timeline.getKeyFrames().add(new KeyFrame(Duration.millis(350), e -> tooltip.setText("Remove"), new KeyValue(bottomAnchorProperty, 0.0D)));
 
+        header.setFillHeight(false);
         header.setAlignment(Pos.CENTER);
 
         header.getChildren().addAll(statusIcon, titleLabel, cancelButton);

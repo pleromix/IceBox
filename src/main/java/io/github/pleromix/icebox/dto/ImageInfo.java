@@ -1,5 +1,6 @@
 package io.github.pleromix.icebox.dto;
 
+import javafx.scene.image.Image;
 import lombok.Data;
 import lombok.NonNull;
 
@@ -7,6 +8,7 @@ import java.io.File;
 
 @Data
 public class ImageInfo {
+
     @NonNull
     private String name;
     @NonNull
@@ -14,7 +16,7 @@ public class ImageInfo {
     @NonNull
     private File originalFile;
     @NonNull
-    private File thumbnailFile;
+    private Image thumbnailImage;
     @NonNull
     private Integer page;
     @NonNull

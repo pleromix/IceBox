@@ -30,13 +30,13 @@
     -fx-focus-color: #27fa;
     -fx-accent: #37e;
     -fx-font-family: 'Open Sans';
-    -fx-font-size: 1em;
+    -fx-font-size: 1.05em;
 }
 
 .text-field {
     -fx-background-color: #f2f2f2, #f2f2f2;
     -fx-background-insets: 0, 1;
-    -fx-background-radius: 4, 3;
+    -fx-background-radius: 3, 2;
     -fx-padding: 0.3em 0.6em;
 }
 
@@ -48,7 +48,7 @@
 .button, .toggle-button {
     -fx-background-color: #ddd, linear-gradient(to bottom, #fff 90%, #fafafa 90%);
     -fx-background-insets: 0, 1;
-    -fx-background-radius: 4, 3;
+    -fx-background-radius: 3, 2;
     -fx-padding: 0.3em 0.6em;
     -fx-cursor: hand;
 }
@@ -88,11 +88,11 @@
 }
 
 .button .icon {
-    -fx-background-size: 16;
+    -fx-background-size: 18;
     -fx-background-position: center;
     -fx-background-repeat: no-repeat;
-    -fx-pref-width: 16;
-    -fx-pref-height: 16;
+    -fx-pref-width: 18;
+    -fx-pref-height: 18;
 }
 
 .check-box {
@@ -226,7 +226,7 @@
 .choice-box {
     -fx-background-color: #ddd, linear-gradient(to bottom, #fff 90%, #fafafa 90%);
     -fx-background-insets: 0, 1;
-    -fx-background-radius: 4, 3;
+    -fx-background-radius: 3, 2;
     -fx-padding: 0;
     -fx-cursor: hand;
 }
@@ -356,10 +356,9 @@
 }
 
 .icon-round-button {
+    -fx-pref-width: 20 !important;
+    -fx-pref-height: 20 !important;
     -fx-background-color: transparent, transparent;
-    -fx-pref-width: 16;
-    -fx-pref-height: 16;
-    -fx-padding: 4;
     -fx-background-radius: 50% !important;
 }
 
@@ -377,6 +376,12 @@
 }
 
 .icon-round-button .close-icon {
+    -fx-min-width: 8;
+    -fx-min-height: 8;
+    -fx-pref-width: 8;
+    -fx-pref-height: 8;
+    -fx-max-width: 8;
+    -fx-max-height: 8;
     -fx-background-color: #999;
     -fx-shape: "M 3.332743,0.33932434 2.1166667,1.5554007 0.90059028,0.33932434 0.33932434,0.90059028 1.5554007,2.1166667 0.33932434,3.332743 0.90059028,3.894009 2.1166667,2.6779326 3.332743,3.894009 3.894009,3.332743 2.6779326,2.1166667 3.894009,0.90059028 Z";
 }
@@ -441,19 +446,17 @@
 }
 
 .message-box .title {
-    -fx-font-size: 14;
+    -fx-font-size: 1.2em;
     -fx-padding: 0 0 4 0;
     -fx-font-family: "Open Sans Medium";
 }
 
 .message-box .icon {
-    -fx-background-size: 20;
+    -fx-background-size: 24;
     -fx-background-position: center;
     -fx-background-repeat: no-repeat;
-    -fx-pref-width: 20;
-    -fx-pref-height: 20;
-    -fx-min-width: 20;
-    -fx-min-height: 20;
+    -fx-pref-width: 24;
+    -fx-pref-height: 24;
 }
 
 .message-box .error {
@@ -580,16 +583,27 @@
 }
 
 .thumbnail {
-    -fx-background-color: #fff, #fff;
-    -fx-background-radius: 3, 2;
-    -fx-background-insets: 0, 2;
-    -fx-pref-width: 136;
-    -fx-pref-height: 136;
+    -fx-background-color: #fff;
+    -fx-background-radius: 2;
+    -fx-border-color: #fff;
+    -fx-border-radius: 3;
+    -fx-border-width: 1;
+    -fx-min-width: 138;
+    -fx-min-height: 138;
+    -fx-pref-width: 138;
+    -fx-pref-height: 138;
+    -fx-max-width: 138;
+    -fx-max-height: 138;
     -fx-effect: dropshadow(gaussian, #0002, 2, 0, 0, 1);
 }
 
 .thumbnail:selected {
-    -fx-background-color: -fx-focus-color, #fff;
+    -fx-border-color: #27f;
+}
+
+.thumbnail:dragged {
+    -fx-border-color: #666;
+    -fx-border-style: segments(4, 2);
 }
 
 .menu-item .icon {
@@ -615,7 +629,6 @@
     -fx-background-color: #fff;
     -fx-background-radius: 5;
     -fx-padding: 2 8;
-    -fx-font-size: 1.1em;
     -fx-graphic-text-gap: 4;
 }
 

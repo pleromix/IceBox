@@ -137,8 +137,6 @@ public final class MessageBox {
         titleLabel.setGraphic(icon);
         content.getChildren().addAll(contentLabel);
         box.getChildren().addAll(titleLabel, content, controlBox);
-        //overlay.getChildren().add(box);
-
 
         scene.getStylesheets().add(Objects.requireNonNull(MessageBox.class.getResource("/io/github/pleromix/icebox/css/app.css")).toExternalForm());
 
@@ -154,10 +152,10 @@ public final class MessageBox {
             scene.setCursor(Cursor.DEFAULT);
         });
 
-        AnchorPane.setTopAnchor( box, 24.0D);
-        AnchorPane.setRightAnchor( box, 24.0D);
-        AnchorPane.setBottomAnchor( box, 24.0D);
-        AnchorPane.setLeftAnchor( box, 24.0D);
+        AnchorPane.setTopAnchor(box, 24.0D);
+        AnchorPane.setRightAnchor(box, 24.0D);
+        AnchorPane.setBottomAnchor(box, 24.0D);
+        AnchorPane.setLeftAnchor(box, 24.0D);
 
         anchorPane.setStyle("-fx-background-color: transparent;");
         scene.setFill(Color.TRANSPARENT);

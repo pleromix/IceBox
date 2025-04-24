@@ -30,10 +30,10 @@ public class App extends Application {
 
         controller = fxmlLoader.getController();
 
-        stage.setMinWidth(1300.0D);
-        stage.setMinHeight(600.0D);
-        stage.setWidth(1300.0D);
-        stage.setHeight(600.0D);
+        stage.setMinWidth(1000.0D);
+        stage.setMinHeight(800.0D);
+        stage.setWidth(1000.0D);
+        stage.setHeight(800.0D);
 
         stage.setTitle("IceBox Application");
         stage.setScene(scene);

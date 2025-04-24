@@ -7,6 +7,8 @@ import io.github.pleromix.icebox.dto.PageSize;
 import io.github.pleromix.icebox.util.Utility;
 import javafx.application.Platform;
 import javafx.beans.InvalidationListener;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.ListChangeListener;
 import javafx.concurrent.Task;
@@ -33,6 +35,8 @@ import java.net.URL;
 import java.util.*;
 
 public class AppController implements Initializable {
+
+    private final BooleanProperty taskIsRunningProperty = new SimpleBooleanProperty();
     @FXML
     public StackPane root;
     @FXML
@@ -62,7 +66,13 @@ public class AppController implements Initializable {
     @FXML
     public TextField fileDimensionTextField;
     @FXML
-    public Button createButton;
+    public Button createPdfFileButton;
+    @FXML
+    public Button newPdfFileButton;
+    @FXML
+    public Button importFilesButton;
+    @FXML
+    public Button guidButton;
     @FXML
     public Button imageFileRemoveButton;
     @FXML
@@ -71,7 +81,6 @@ public class AppController implements Initializable {
     public ChoiceBox<PageMargin> pageMarginChoiceBox;
     @FXML
     public ChoiceBox<PageOrientation> pageOrientationChoiceBox;
-
     private double jobsPanelCurrentDividerPosition;
     private PageSize defaultPageSize;
 
@@ -98,7 +107,7 @@ public class AppController implements Initializable {
         initPdfFileNameTextFieldContextMenu();
 
         repositoryContent.getChildren().addListener((InvalidationListener) observable -> repositorySize.set(repositoryContent.getChildren().size()));
-        createButton.disableProperty().bind(pdfFileNameTextField.textProperty().isEmpty().or(repositorySize.isEqualTo(0)));
+        createPdfFileButton.disableProperty().bind(pdfFileNameTextField.textProperty().isEmpty().or(taskIsRunningProperty).or(repositorySize.isEqualTo(0)));
 
         jobsPanelCurrentDividerPosition = mainSplitPane.getDividers().getFirst().getPosition();
     }
@@ -117,6 +126,8 @@ public class AppController implements Initializable {
             pageMarginChoiceBox.getSelectionModel().select(PageMargin.None);
             pageOrientationChoiceBox.getSelectionModel().select(PageOrientation.Portrait);
             pdfFileNameTextField.clear();
+
+            Notification.closeShowingNotification();
         }), new Pair<>("No", e -> {
         })));
     }
@@ -131,10 +142,11 @@ public class AppController implements Initializable {
         fileChooser.setTitle("Save the PDF file");
         fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("PDF (*.pdf)", "*.pdf"));
 
-        fileChooser.initialFileNameProperty().bind(pdfFileNameTextField.textProperty());
+        fileChooser.initialFileNameProperty().bind(pdfFileNameTextField.textProperty().concat(".pdf"));
 
-        final var file = fileChooser.showSaveDialog(root.getScene().getWindow());
-        final var task = new Task<Void>() {
+        var file = fileChooser.showSaveDialog(root.getScene().getWindow());
+
+        final var task = new Task<>() {
             @Override
             protected Void call() throws Exception {
                 try (var document = new PDDocument()) {
@@ -155,41 +167,36 @@ public class AppController implements Initializable {
 
                         document.addPage(page);
 
-                        // Get image dimensions
-                        float imageWidth = image.getWidth();
-                        float imageHeight = image.getHeight();
+                        var imageWidth = image.getWidth();
+                        var imageHeight = image.getHeight();
 
-                        // Get page dimensions
-                        float pageWidth = page.getMediaBox().getWidth();
-                        float pageHeight = page.getMediaBox().getHeight();
+                        var pageWidth = page.getMediaBox().getWidth();
+                        var pageHeight = page.getMediaBox().getHeight();
 
-                        // Calculate scaling factor to fit within the page while keeping aspect ratio
-                        float widthScale = pageWidth / imageWidth;
-                        float heightScale = pageHeight / imageHeight;
-                        float scale = Math.min(widthScale, heightScale); // Maintain aspect ratio
+                        var widthScale = pageWidth / imageWidth;
+                        var heightScale = pageHeight / imageHeight;
+                        var scale = Math.min(widthScale, heightScale); // Maintain aspect ratio
 
-                        // Calculate new image dimensions
-                        float newWidth = imageWidth * scale;
-                        float newHeight = imageHeight * scale;
+                        var newWidth = imageWidth * scale;
+                        var newHeight = imageHeight * scale;
 
                         switch (pageMarginChoiceBox.getSelectionModel().getSelectedItem()) {
                             case Small -> {
-                                newWidth -= 50;
-                                newHeight -= 50;
+                                newWidth -= 48; // 0.5 inch
+                                newHeight -= 48; // 0.5 inch
                             }
                             case Medium -> {
-                                newWidth -= 100;
-                                newHeight -= 100;
+                                newWidth -= 96; // 1 inch
+                                newHeight -= 96; // 1 inch
                             }
                             case Large -> {
-                                newWidth -= 150;
-                                newHeight -= 150;
+                                newWidth -= 144; // 1.5 inch
+                                newHeight -= 144; // 1.5 inch
                             }
                         }
 
-                        // Calculate position to center the resized image
-                        float x = (pageWidth - newWidth) / 2;
-                        float y = (pageHeight - newHeight) / 2;
+                        var x = (pageWidth - newWidth) / 2;
+                        var y = (pageHeight - newHeight) / 2;
 
                         try (var contentStream = new PDPageContentStream(document, page)) {
                             contentStream.drawImage(image, x, y, newWidth, newHeight);
@@ -205,11 +212,25 @@ public class AppController implements Initializable {
             }
 
             @Override
+            protected void running() {
+                super.running();
+                taskIsRunningProperty.set(true);
+                disableTopControls(true);
+            }
+
+            @Override
             protected void succeeded() {
                 super.succeeded();
                 Notification.create("Done!", "Your PDF file is ready, follow the link:", Duration.minutes(1), "Open File", e -> {
                     App.application.getHostServices().showDocument(file.getAbsolutePath());
                 });
+                disableTopControls(false);
+            }
+
+            @Override
+            protected void done() {
+                super.done();
+                taskIsRunningProperty.set(false);
             }
         };
 
@@ -242,7 +263,7 @@ public class AppController implements Initializable {
                         }
 
                         try {
-                            thumbnails.add(Thumbnail.create(files.get(index), Utility.resize(files.get(index), 120.0D), numberOfCurrentThumbnails + index + 1));
+                            thumbnails.add(Thumbnail.create(files.get(index), Utility.resize(files.get(index), 200.0D), numberOfCurrentThumbnails + index + 1));
                             updateProgress(numberOfCurrentThumbnails + index + 1, files.size());
                         } catch (IOException e) {
                             throw new RuntimeException(e);
@@ -303,14 +324,32 @@ public class AppController implements Initializable {
         final var cutMenuItem = new MenuItem("Cut");
         final var copyMenuItem = new MenuItem("Copy");
         final var pasteMenuItem = new MenuItem("Paste");
+        final var selectAllMenuItem = new MenuItem("Select All");
+        final var deleteMenuItem = new MenuItem("Delete");
         final var uuidMenuItem = new MenuItem("Get a GUID");
 
         cutMenuItem.setOnAction(event -> pdfFileNameTextField.cut());
         copyMenuItem.setOnAction(event -> pdfFileNameTextField.copy());
         pasteMenuItem.setOnAction(event -> pdfFileNameTextField.paste());
+        selectAllMenuItem.setOnAction(event -> pdfFileNameTextField.selectAll());
+        deleteMenuItem.setOnAction(event -> pdfFileNameTextField.clear());
         uuidMenuItem.setOnAction(event -> pdfFileNameTextField.setText(UUID.randomUUID().toString()));
 
-        contextMenu.getItems().addAll(cutMenuItem, copyMenuItem, pasteMenuItem, new SeparatorMenuItem(), uuidMenuItem);
+        cutMenuItem.disableProperty().bind(pdfFileNameTextField.selectedTextProperty().isEmpty());
+        copyMenuItem.disableProperty().bind(pdfFileNameTextField.selectedTextProperty().isEmpty());
+        selectAllMenuItem.disableProperty().bind(pdfFileNameTextField.textProperty().isEmpty());
+        deleteMenuItem.disableProperty().bind(pdfFileNameTextField.textProperty().isEmpty());
+
+        contextMenu.getItems().addAll(
+                cutMenuItem,
+                copyMenuItem,
+                pasteMenuItem,
+                new SeparatorMenuItem(),
+                selectAllMenuItem,
+                deleteMenuItem,
+                new SeparatorMenuItem(),
+                uuidMenuItem
+        );
 
         pdfFileNameTextField.setContextMenu(contextMenu);
     }
@@ -437,5 +476,15 @@ public class AppController implements Initializable {
 
     public void onAboutMe(ActionEvent actionEvent) {
         Panel.open(Panel.ABOUT_ME);
+    }
+
+    public void disableTopControls(boolean disable) {
+        newPdfFileButton.setDisable(disable);
+        importFilesButton.setDisable(disable);
+        pageSizeChoiceBox.setDisable(disable);
+        pageMarginChoiceBox.setDisable(disable);
+        pageOrientationChoiceBox.setDisable(disable);
+        pdfFileNameTextField.setDisable(disable);
+        guidButton.setDisable(disable);
     }
 }

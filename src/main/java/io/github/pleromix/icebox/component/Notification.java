@@ -21,6 +21,7 @@ import java.util.Stack;
 public class Notification extends VBox {
 
     public static Stack<Notification> notifications = new Stack<>();
+
     private final HBox header = new HBox();
     private final Label titleLabel = new Label();
     private final Button closeButton = new Button();
@@ -64,6 +65,12 @@ public class Notification extends VBox {
         create(title, content, Duration.seconds(5), null, null);
     }
 
+    public static void closeShowingNotification() {
+        if (!notifications.isEmpty()) {
+            notifications.pop().timeline.playFrom("close");
+        }
+    }
+
     private void initialize() {
         final var icon = new Region();
 
@@ -93,6 +100,8 @@ public class Notification extends VBox {
         closeButton.setOnAction(e -> timeline.playFrom("close"));
 
         setId("notification");
+
+        header.setFillHeight(false);
 
         header.getChildren().addAll(titleLabel, closeButton);
         getChildren().addAll(header, contentLabel);
