@@ -246,6 +246,12 @@ public class AppController implements Initializable {
                 super.failed();
                 getException().printStackTrace();
             }
+
+            @Override
+            protected void cancelled() {
+                super.cancelled();
+                disableTopControls(false);
+            }
         };
 
         if (Objects.nonNull(file)) {

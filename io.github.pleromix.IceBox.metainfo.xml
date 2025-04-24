@@ -3,11 +3,23 @@
     <id>io.github.pleromix.IceBox</id>
 
     <name>IceBox</name>
-    <summary>PDF Creator</summary>
+    <summary>PDF Maker</summary>
     <developer_name>Mohammadreza Faraji</developer_name>
 
     <releases>
-        <release version="1.0" date="2025-04-18"/>
+        <release version="1.0.1" date="2025-04-24">
+            <description>
+                <ul>
+                    <li>Fixed drag-and-drop and PNG thumbnail issues</li>
+                    <li>Disabled actions during PDF creation to prevent interference</li>
+                    <li>Added link button next to completed jobs to be able to open the PDF</li>
+                    <li>Thumbnails are now stored in memory instead of temp files</li>
+                    <li>Closing active notifications when starting a new PDF</li>
+                    <li>Added support for *.webp files</li>
+                    <li>Fixed final PDF file extension issue</li>
+                </ul>
+            </description>
+        </release>
     </releases>
 
     <metadata_license>CC-BY-SA-4.0</metadata_license>
@@ -48,11 +60,15 @@
 
     <screenshots>
         <screenshot type="default">
-            <image>https://raw.githubusercontent.com/pleromix/IceBox/2343bfef1d3ff89977dd91656294d9bbe4d7c029/screenshots/image_1.png</image>
+            <image>
+                https://raw.githubusercontent.com/pleromix/IceBox/2343bfef1d3ff89977dd91656294d9bbe4d7c029/screenshots/image_1.png
+            </image>
             <caption>Image files are imported</caption>
         </screenshot>
         <screenshot>
-            <image>https://raw.githubusercontent.com/pleromix/IceBox/2343bfef1d3ff89977dd91656294d9bbe4d7c029/screenshots/image_2.png</image>
+            <image>
+                https://raw.githubusercontent.com/pleromix/IceBox/2343bfef1d3ff89977dd91656294d9bbe4d7c029/screenshots/image_2.png
+            </image>
             <caption>Main interface</caption>
         </screenshot>
     </screenshots>
