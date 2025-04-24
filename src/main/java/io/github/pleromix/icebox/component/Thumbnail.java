@@ -28,9 +28,9 @@ import java.util.TreeSet;
 public class Thumbnail extends StackPane {
 
     private static final TreeSet<Integer> selectedItems = new TreeSet<>(Comparator.naturalOrder());
+    public static final double IMAGE_SIZE = 130.0D;
 
     private static Thumbnail draggedThumbnail;
-    private static boolean isDragging;
     private static boolean isOutsideOfRoot;
 
     private final ImageView imageView = new ImageView();
@@ -68,14 +68,19 @@ public class Thumbnail extends StackPane {
         removeSelected();
     }
 
-    public static Thumbnail create(File originalFile, Image thumbnailFile, int page) throws IOException {
+    public static Thumbnail create(File originalFile, Image thumbnailImage, int page) throws IOException {
         final var thumbnail = new Thumbnail();
         final var size = Utility.fileAsMat(originalFile).size();
 
-        thumbnail.imageView.setImage(thumbnailFile);
-        thumbnail.imageInfo = new ImageInfo(originalFile.getName(), originalFile.length(), originalFile, thumbnailFile, page, (int) Math.round(size.width), (int) Math.round(size.height));
+        thumbnail.imageView.setImage(thumbnailImage);
+        thumbnail.imageInfo = new ImageInfo(originalFile.getName(), originalFile.length(), originalFile, thumbnailImage, page, (int) Math.round(size.width), (int) Math.round(size.height));
         thumbnail.tooltip = new Tooltip(String.format("Page: %d", thumbnail.imageInfo.getPage()));
         Tooltip.install(thumbnail, thumbnail.tooltip);
+
+        if (thumbnailImage.getWidth() < IMAGE_SIZE) {
+            thumbnail.imageView.setFitWidth(thumbnailImage.getWidth());
+            thumbnail.imageView.setFitHeight(thumbnailImage.getHeight());
+        }
 
         return thumbnail;
     }
@@ -133,7 +138,7 @@ public class Thumbnail extends StackPane {
                         return;
                     }
                 } else if (isSelected) {
-                    unSelect();
+                    deselect();
                     selectedItems.remove(index);
                     return;
                 }
@@ -150,8 +155,9 @@ public class Thumbnail extends StackPane {
         });
 
         addEventFilter(MouseDragEvent.DRAG_DETECTED, event -> {
+            deselectAll();
+            System.out.println("OK");
             draggedThumbnail = this;
-            isDragging = true;
             startFullDrag();
             App.controller.root.setCursor(Cursor.CLOSED_HAND);
             pseudoClassStateChanged(dragged, true);
@@ -169,7 +175,6 @@ public class Thumbnail extends StackPane {
         Runnable mouseDragReleasedAction = () -> {
             App.controller.root.setCursor(Cursor.DEFAULT);
             reorderPages();
-            isDragging = false;
             pseudoClassStateChanged(dragged, false);
 
             if (Objects.nonNull(draggedThumbnail)) {
@@ -189,7 +194,7 @@ public class Thumbnail extends StackPane {
 
         App.controller.repository.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
             if (event.getTarget() != this && event.getButton() != MouseButton.SECONDARY && !(event.isControlDown() || event.isShiftDown())) {
-                unSelect();
+                deselect();
                 selectedItems.clear();
             }
         });
@@ -220,10 +225,11 @@ public class Thumbnail extends StackPane {
 
         App.controller.imageFileRemoveButton.setOnAction(event -> removeMenuItem.fire());
 
-        imageView.setFitWidth(130.0D);
-        imageView.setFitHeight(130.0D);
+        imageView.setFitWidth(IMAGE_SIZE);
+        imageView.setFitHeight(IMAGE_SIZE);
         imageView.setPreserveRatio(true);
         imageView.setMouseTransparent(true);
+        imageView.setSmooth(true);
 
         StackPane.setMargin(imageView, new Insets(8.0D));
 
@@ -236,9 +242,14 @@ public class Thumbnail extends StackPane {
         pseudoClassStateChanged(selected, true);
     }
 
-    public void unSelect() {
+    public void deselect() {
         isSelected = false;
         pseudoClassStateChanged(selected, false);
         App.controller.closeImageInfo();
+    }
+
+    public void deselectAll() {
+        final var repositoryContent = (FlowPane) App.controller.repository.getContent();
+        repositoryContent.getChildren().stream().map(node -> (Thumbnail) node).forEach(Thumbnail::deselect);
     }
 }

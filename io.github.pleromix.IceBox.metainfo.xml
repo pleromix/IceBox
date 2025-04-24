@@ -15,7 +15,7 @@
 
     <description>
         <p>
-            IceBox can help you convert your images into a PDF file.
+            IceBox helps you convert images into a PDF file
         </p>
     </description>
 
@@ -31,8 +31,8 @@
     </keywords>
 
     <branding>
-        <color type="primary" scheme_preference="light">#45a4e3ff</color>
-        <color type="primary" scheme_preference="dark">#214478ff</color>
+        <color type="primary" scheme_preference="light">#e9ddafff</color>
+        <color type="primary" scheme_preference="dark">#c8c4b7ff</color>
     </branding>
 
     <url type="homepage">https://github.com/pleromix/IceBox</url>

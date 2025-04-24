@@ -20,11 +20,11 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<StackPane fx:id="root" prefHeight="800.0" prefWidth="1000.0" stylesheets="@css/app.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.github.pleromix.icebox.controller.AppController">
+<StackPane fx:id="root" prefHeight="700.0" prefWidth="1000.0" stylesheets="@css/app.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.github.pleromix.icebox.controller.AppController">
    <children>
       <ScrollPane fitToHeight="true" fitToWidth="true">
          <content>
-            <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" spacing="8.0">
+            <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="8.0">
                <padding>
                   <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />
                </padding>
@@ -82,19 +82,19 @@
                         <VBox spacing="2.0">
                            <children>
                               <Label text="Size" />
-                              <ChoiceBox fx:id="pageSizeChoiceBox" prefWidth="220.0" />
+                              <ChoiceBox fx:id="pageSizeChoiceBox" prefWidth="240.0" />
                            </children>
                         </VBox>
                         <VBox spacing="2.0">
                            <children>
                               <Label text="Margin" />
-                              <ChoiceBox fx:id="pageMarginChoiceBox" prefWidth="100.0" />
+                              <ChoiceBox fx:id="pageMarginChoiceBox" prefWidth="140.0" />
                            </children>
                         </VBox>
                         <VBox layoutX="389.0" layoutY="10.0" spacing="2.0">
                            <children>
                               <Label text="Orientation" />
-                              <ChoiceBox fx:id="pageOrientationChoiceBox" prefWidth="120.0" />
+                              <ChoiceBox fx:id="pageOrientationChoiceBox" prefWidth="110.0" />
                            </children>
                         </VBox>
                         <VBox spacing="2.0">
@@ -137,9 +137,9 @@
                               </Group>
                            </children>
                         </VBox>
-                        <SplitPane fx:id="mainSplitPane" dividerPositions="0.3" HBox.hgrow="ALWAYS">
+                        <SplitPane fx:id="mainSplitPane" dividerPositions="0.5" HBox.hgrow="ALWAYS">
                            <items>
-                              <ScrollPane fx:id="jobsPanel" fitToHeight="true" fitToWidth="true" maxWidth="300.0" minWidth="200.0" prefViewportHeight="1.0" prefWidth="200.0">
+                              <ScrollPane fx:id="jobsPanel" fitToHeight="true" fitToWidth="true" maxWidth="300.0" minWidth="250.0" prefViewportHeight="1.0" prefWidth="300.0">
                                  <content>
                                     <VBox spacing="4.0">
                                        <padding>
@@ -161,7 +161,7 @@
                                                 </FlowPane>
                                              </content>
                                           </ScrollPane>
-                                          <GridPane fx:id="imageInfoPanel" hgap="8.0" maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="300.0" styleClass="image-info" vgap="4.0" StackPane.alignment="TOP_RIGHT">
+                                          <GridPane fx:id="imageInfoPanel" hgap="8.0" maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="250.0" styleClass="image-info" vgap="4.0" StackPane.alignment="TOP_RIGHT">
                                             <columnConstraints>
                                               <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" />
                                               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -206,7 +206,7 @@
                                                       <Insets top="8.0" />
                                                    </GridPane.margin>
                                                 </Button>
-                                                <Label text="Dimension" GridPane.rowIndex="5" />
+                                                <Label text="Dim." GridPane.rowIndex="5" />
                                                 <Label text="Page" GridPane.rowIndex="4" />
                                                 <Label text="Path" GridPane.rowIndex="3" />
                                                 <Label text="Size" GridPane.rowIndex="2" />

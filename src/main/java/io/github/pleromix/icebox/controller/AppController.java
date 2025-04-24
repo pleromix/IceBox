@@ -24,11 +24,13 @@ import javafx.scene.layout.*;
 import javafx.stage.FileChooser;
 import javafx.util.Duration;
 import javafx.util.Pair;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
+import org.opencv.core.MatOfByte;
 
 import java.io.IOException;
 import java.net.URL;
@@ -155,7 +157,13 @@ public class AppController implements Initializable {
                     PDRectangle pageSize;
 
                     for (var file : files) {
-                        var image = PDImageXObject.createFromFile(file.getAbsolutePath(), document);
+                        PDImageXObject image = null;
+
+                        if (FilenameUtils.isExtension(file.getName(), "webp")) {
+                            image = PDImageXObject.createFromByteArray(document, Utility.webpToJpg(file).toArray(), null);
+                        } else {
+                            image = PDImageXObject.createFromFile(file.getAbsolutePath(), document);
+                        }
 
                         if (Objects.isNull(rectangle)) {
                             pageSize = pageOrientationChoiceBox.getValue() == PageOrientation.Landscape ? new PDRectangle(image.getHeight(), image.getWidth()) : new PDRectangle(image.getWidth(), image.getHeight());
@@ -232,10 +240,16 @@ public class AppController implements Initializable {
                 super.done();
                 taskIsRunningProperty.set(false);
             }
+
+            @Override
+            protected void failed() {
+                super.failed();
+                getException().printStackTrace();
+            }
         };
 
         if (Objects.nonNull(file)) {
-            Job.create("Creating PDF file...", "Your PDF file is ready!", "We couldn't create the PDF file!", task);
+            Job.create("Creating PDF file", "Your PDF file is ready", "We couldn't create the PDF file", file.getAbsolutePath(), task);
         }
     }
 
@@ -244,12 +258,17 @@ public class AppController implements Initializable {
         final var repositoryContent = (FlowPane) repository.getContent();
 
         fileChooser.setTitle("Import Image Files");
-        fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Image Files (png, jpg, jpeg, gif)", "*.png", "*.jpg", "*.jpeg", "*.gif"));
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("JPEG (*.jpeg)", "*.jpg", "*.jpeg"),
+                new FileChooser.ExtensionFilter("Portable Network Graphics (*.png)", "*.png"),
+                new FileChooser.ExtensionFilter("Bitmap (*.bmp)", "*.bmp"),
+                new FileChooser.ExtensionFilter("WebP (*.webp)", "*.webp")
+        );
 
         final var files = fileChooser.showOpenMultipleDialog(root.getScene().getWindow());
 
         if (Objects.nonNull(files) && !files.isEmpty()) {
-            Job.create("Importing image files...", "Your files are imported.", "We're not able to import files!", new Task<Void>() {
+            Job.create("Importing image files", "Your files are imported", "We're not able to import files", new Task<Void>() {
 
                 private final List<Thumbnail> thumbnails = new ArrayList<>();
 
@@ -263,7 +282,7 @@ public class AppController implements Initializable {
                         }
 
                         try {
-                            thumbnails.add(Thumbnail.create(files.get(index), Utility.resize(files.get(index), 200.0D), numberOfCurrentThumbnails + index + 1));
+                            thumbnails.add(Thumbnail.create(files.get(index), Utility.resize(files.get(index), 130.0D), numberOfCurrentThumbnails + index + 1));
                             updateProgress(numberOfCurrentThumbnails + index + 1, files.size());
                         } catch (IOException e) {
                             throw new RuntimeException(e);
@@ -278,6 +297,12 @@ public class AppController implements Initializable {
                     super.succeeded();
                     repositoryContent.getChildren().addAll(thumbnails);
                     updateDetails();
+                }
+
+                @Override
+                protected void failed() {
+                    super.failed();
+                    getException().printStackTrace();
                 }
             });
         }

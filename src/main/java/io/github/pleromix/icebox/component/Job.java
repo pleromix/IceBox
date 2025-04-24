@@ -11,12 +11,11 @@ import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ProgressBar;
-import javafx.scene.control.Tooltip;
+import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.util.Duration;
+
+import java.util.Objects;
 
 public class Job extends AnchorPane {
 
@@ -24,6 +23,7 @@ public class Job extends AnchorPane {
     private final Region statusIcon = new Region();
     private final Label titleLabel = new Label();
     private final Button cancelButton = new Button();
+    private final Button linkButton = new Button();
     private final ProgressBar progressBar = new ProgressBar();
     private final Timeline timeline = new Timeline();
     private final DoubleProperty bottomAnchorProperty = new SimpleDoubleProperty(4.0D);
@@ -37,6 +37,10 @@ public class Job extends AnchorPane {
     }
 
     public static void create(String titleWhileRunning, String titleWhileFinished, String titleWhileFailed, Task<?> task) {
+        create(titleWhileRunning, titleWhileFinished, titleWhileFailed, null, task);
+    }
+
+    public static void create(String titleWhileRunning, String titleWhileFinished, String titleWhileFailed, String linkPath, Task<?> task) {
         final var panelContent = (VBox) App.controller.jobsPanel.getContent();
         final var job = new Job();
         final var toggleButton = App.controller.currentJobsToggleButton;
@@ -66,6 +70,14 @@ public class Job extends AnchorPane {
         task.addEventFilter(WorkerStateEvent.WORKER_STATE_SUCCEEDED, e -> {
             job.timeline.play();
             job.titleLabel.setText(titleWhileFinished);
+
+            if (Objects.nonNull(linkPath)) {
+                job.titleLabel.setGraphic(job.linkButton);
+
+                job.linkButton.setOnAction(event -> {
+                    App.application.getHostServices().showDocument(linkPath);
+                });
+            }
         });
 
         task.addEventFilter(WorkerStateEvent.WORKER_STATE_FAILED, e -> {
@@ -86,8 +98,10 @@ public class Job extends AnchorPane {
     }
 
     private void initialize() {
-        final var icon = new Region();
-        final var tooltip = new Tooltip("Cancel the job");
+        final var cancelIcon = new Region();
+        final var linkIcon = new Region();
+        final var cancelTooltip = new Tooltip("Cancel the job");
+        final var linkTooltip = new Tooltip("Open the file");
 
         setPrefHeight(42.0D);
 
@@ -95,21 +109,33 @@ public class Job extends AnchorPane {
         statusIcon.setMinHeight(Region.USE_PREF_SIZE);
         statusIcon.getStyleClass().addAll("status-icon", "succeeded");
 
-        icon.getStyleClass().add("close-icon");
+        cancelIcon.getStyleClass().add("close-icon");
+        linkIcon.getStyleClass().add("link-icon");
 
         cancelButton.setMinWidth(Button.USE_PREF_SIZE);
         cancelButton.setMinHeight(Button.USE_PREF_SIZE);
 
+        linkButton.setMinWidth(Button.USE_PREF_SIZE);
+        linkButton.setMinHeight(Button.USE_PREF_SIZE);
+
         HBox.setHgrow(titleLabel, Priority.ALWAYS);
         titleLabel.setMaxWidth(Double.MAX_VALUE);
+        titleLabel.setContentDisplay(ContentDisplay.RIGHT);
 
         progressBar.setMaxWidth(Double.MAX_VALUE);
 
         getStyleClass().add("job");
         cancelButton.getStyleClass().add("icon-round-button");
+        linkButton.getStyleClass().add("link-button");
 
-        cancelButton.setGraphic(icon);
-        cancelButton.setTooltip(tooltip);
+        cancelButton.setGraphic(cancelIcon);
+        cancelButton.setTooltip(cancelTooltip);
+
+        linkIcon.setScaleX(0.0D);
+        linkIcon.setScaleY(0.0D);
+
+        linkButton.setGraphic(linkIcon);
+        linkButton.setTooltip(linkTooltip);
 
         AnchorPane.setTopAnchor(header, 0.0D);
         AnchorPane.setRightAnchor(header, 0.0D);
@@ -127,12 +153,34 @@ public class Job extends AnchorPane {
         timeline.getKeyFrames().add(new KeyFrame(Duration.ZERO, new KeyValue(progressBar.opacityProperty(), 1.0D)));
         timeline.getKeyFrames().add(new KeyFrame(Duration.millis(150), new KeyValue(bottomAnchorProperty, bottomAnchorProperty.doubleValue())));
         timeline.getKeyFrames().add(new KeyFrame(Duration.millis(200), e -> getChildren().remove(progressBar), new KeyValue(progressBar.opacityProperty(), 0.0D)));
-        timeline.getKeyFrames().add(new KeyFrame(Duration.millis(250), new KeyValue(statusIcon.scaleXProperty(), 0.0D), new KeyValue(statusIcon.scaleYProperty(), 0.0D), new KeyValue(statusIcon.prefWidthProperty(), 0.0D), new KeyValue(statusIcon.prefHeightProperty(), 0.0D), new KeyValue(titleLabel.paddingProperty(), new Insets(0.0D), Interpolator.EASE_OUT)));
-        timeline.getKeyFrames().add(new KeyFrame(Duration.millis(350), new KeyValue(statusIcon.scaleXProperty(), 1.0D), new KeyValue(statusIcon.scaleYProperty(), 1.0D), new KeyValue(statusIcon.prefWidthProperty(), 18.0D), new KeyValue(statusIcon.prefHeightProperty(), 18.0D), new KeyValue(titleLabel.paddingProperty(), new Insets(0.0D, 0.0D, 0.0D, 8.0D), Interpolator.EASE_OUT)));
-        timeline.getKeyFrames().add(new KeyFrame(Duration.millis(350), e -> tooltip.setText("Remove"), new KeyValue(bottomAnchorProperty, 0.0D)));
+        timeline.getKeyFrames().add(
+                new KeyFrame(
+                        Duration.millis(250),
+                        new KeyValue(statusIcon.scaleXProperty(), 0.0D),
+                        new KeyValue(statusIcon.scaleYProperty(), 0.0D),
+                        new KeyValue(statusIcon.prefWidthProperty(), 0.0D),
+                        new KeyValue(statusIcon.prefHeightProperty(), 0.0D),
+                        new KeyValue(titleLabel.paddingProperty(), new Insets(0.0D), Interpolator.EASE_OUT),
+                        new KeyValue(linkIcon.scaleXProperty(), 0.0D),
+                        new KeyValue(linkIcon.scaleYProperty(), 0.0D)
+                )
+        );
+        timeline.getKeyFrames().add(
+                new KeyFrame(Duration.millis(350),
+                        new KeyValue(statusIcon.scaleXProperty(), 1.0D),
+                        new KeyValue(statusIcon.scaleYProperty(), 1.0D),
+                        new KeyValue(statusIcon.prefWidthProperty(), 18.0D),
+                        new KeyValue(statusIcon.prefHeightProperty(), 18.0D),
+                        new KeyValue(titleLabel.paddingProperty(), new Insets(0.0D, 0.0D, 0.0D, 8.0D), Interpolator.EASE_OUT),
+                        new KeyValue(linkIcon.scaleXProperty(), 1.0D),
+                        new KeyValue(linkIcon.scaleYProperty(), 1.0D)
+                )
+        );
+        timeline.getKeyFrames().add(new KeyFrame(Duration.millis(350), e -> cancelTooltip.setText("Remove"), new KeyValue(bottomAnchorProperty, 0.0D)));
 
         header.setFillHeight(false);
         header.setAlignment(Pos.CENTER);
+        header.setSpacing(2.0D);
 
         header.getChildren().addAll(statusIcon, titleLabel, cancelButton);
         getChildren().addAll(header, progressBar);

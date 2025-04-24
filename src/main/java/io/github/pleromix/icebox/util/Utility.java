@@ -5,6 +5,7 @@ import javafx.scene.image.PixelFormat;
 import javafx.scene.image.WritableImage;
 import org.apache.commons.lang3.SystemUtils;
 import org.opencv.core.Mat;
+import org.opencv.core.MatOfByte;
 import org.opencv.core.Size;
 import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
@@ -51,9 +52,21 @@ public final class Utility {
         var outputImage = new Mat();
         var scale = width / inputImage.size().width;
 
-        Imgproc.resize(inputImage, outputImage, new Size(0, 0), scale, scale, Imgproc.INTER_AREA);
+        if (inputImage.size().width > width) {
+            Imgproc.resize(inputImage, outputImage, new Size(0, 0), scale, scale, Imgproc.INTER_AREA);
+            return matToImage(outputImage);
+        }
 
-        return matToImage(outputImage);
+        return matToImage(inputImage);
+    }
+
+    public static MatOfByte webpToJpg(File imageFile) throws IOException {
+        var inputImage = fileAsMat(imageFile);
+        var jpgBytes = new MatOfByte();
+
+        Imgcodecs.imencode(".jpg", inputImage, jpgBytes);
+
+        return jpgBytes;
     }
 
     public static Mat fileAsMat(File imageFile) throws IOException {
