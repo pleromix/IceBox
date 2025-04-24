@@ -34,7 +34,7 @@ flatpak run io.github.pleromix.IceBox
 
 ## 📸 Screenshot
 
-![App Screenshot](https://raw.githubusercontent.com/pleromix/IceBox/2343bfef1d3ff89977dd91656294d9bbe4d7c029/screenshots/image_1.png)
+![App Screenshot](https://raw.githubusercontent.com/pleromix/IceBox/cc98bae4a79d7db84a8803ce4a1bf6927a778339/screenshots/image_1.png)
 
 ## 📄 License
 
