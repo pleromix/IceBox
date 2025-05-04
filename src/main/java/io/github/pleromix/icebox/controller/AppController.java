@@ -3,10 +3,12 @@ package io.github.pleromix.icebox.controller;
 import com.digidemic.unitof.UnitOf;
 import io.github.pleromix.icebox.App;
 import io.github.pleromix.icebox.component.*;
+import io.github.pleromix.icebox.dto.Metadata;
 import io.github.pleromix.icebox.dto.PageSize;
 import io.github.pleromix.icebox.util.Utility;
 import javafx.application.Platform;
 import javafx.beans.InvalidationListener;
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -19,26 +21,43 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.scene.input.*;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import javafx.stage.FileChooser;
 import javafx.util.Duration;
 import javafx.util.Pair;
-import org.apache.commons.io.FilenameUtils;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
-import org.opencv.core.MatOfByte;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.ResourceBundle;
 
 public class AppController implements Initializable {
 
+    public static final float ONE_HALF_INCH_MARGIN = 0.5F * 2 * 72;
+    public static final float ONE_INCH_MARGIN = 1.0F * 2 * 72;
+    public static final float THREE_HALVES_INCH_MARGIN = 1.5F * 2 * 72;
+
     private final BooleanProperty taskIsRunningProperty = new SimpleBooleanProperty();
+
+    private double jobsPanelCurrentDividerPosition;
+    private PageSize defaultPageSize;
+
+    @Getter
+    @Setter
+    private Metadata metadata;
+
     @FXML
     public StackPane root;
     @FXML
@@ -50,13 +69,11 @@ public class AppController implements Initializable {
     @FXML
     public GridPane imageInfoPanel;
     @FXML
-    public ToggleButton currentJobsToggleButton;
+    public ToggleButton jobsToggleButton;
     @FXML
     public Label pageCountLabel;
     @FXML
-    public Label documentSizeLabel;
-    @FXML
-    public TextField pdfFileNameTextField;
+    public Label sizeLabel;
     @FXML
     public TextField fileNameTextField;
     @FXML
@@ -74,8 +91,6 @@ public class AppController implements Initializable {
     @FXML
     public Button importFilesButton;
     @FXML
-    public Button guidButton;
-    @FXML
     public Button imageFileRemoveButton;
     @FXML
     public ChoiceBox<PageSize> pageSizeChoiceBox;
@@ -83,8 +98,12 @@ public class AppController implements Initializable {
     public ChoiceBox<PageMargin> pageMarginChoiceBox;
     @FXML
     public ChoiceBox<PageOrientation> pageOrientationChoiceBox;
-    private double jobsPanelCurrentDividerPosition;
-    private PageSize defaultPageSize;
+    @FXML
+    public Button menuButton;
+    @FXML
+    public Slider viewSizeSlider;
+    @FXML
+    public ToggleSwitch showImageInfoToggleSwitch;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -106,16 +125,21 @@ public class AppController implements Initializable {
         initPageSizeChoiceBox();
         initPageMarginChoiceBox();
         initPageOrientationChoiceBox();
-        initPdfFileNameTextFieldContextMenu();
 
         repositoryContent.getChildren().addListener((InvalidationListener) observable -> repositorySize.set(repositoryContent.getChildren().size()));
-        createPdfFileButton.disableProperty().bind(pdfFileNameTextField.textProperty().isEmpty().or(taskIsRunningProperty).or(repositorySize.isEqualTo(0)));
+        createPdfFileButton.disableProperty().bind(taskIsRunningProperty.or(repositorySize.isEqualTo(0)));
 
         jobsPanelCurrentDividerPosition = mainSplitPane.getDividers().getFirst().getPosition();
+
+        setMenu();
+
+        viewSizeSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
+            Thumbnail.viewSizeProperty.set(Thumbnail.ViewSize.values()[newValue.intValue()]);
+        });
     }
 
     public void onNewPdfFile(ActionEvent actionEvent) {
-        MessageBox.create("New PDF File", "Do you want to start a new session?", MessageBox.MessageType.Question, List.of(new Pair<>("Yes", e -> {
+        MessageBox.create("New PDF File", "Would you like to start over?", MessageBox.MessageType.Question, List.of(new Pair<>("Yes", e -> {
             final var jobsPanelContent = (VBox) jobsPanel.getContent();
             final var jobs = jobsPanelContent.getChildren().stream().filter(node -> node instanceof Job).map(node -> (Job) node).toList();
 
@@ -127,43 +151,39 @@ public class AppController implements Initializable {
             pageSizeChoiceBox.getSelectionModel().select(defaultPageSize);
             pageMarginChoiceBox.getSelectionModel().select(PageMargin.None);
             pageOrientationChoiceBox.getSelectionModel().select(PageOrientation.Portrait);
-            pdfFileNameTextField.clear();
+            showImageInfoToggleSwitch.setSelected(false);
+            viewSizeSlider.setValue(1.0D);
 
             Notification.closeShowingNotification();
         }), new Pair<>("No", e -> {
         })));
     }
 
-    public void onGuid(ActionEvent actionEvent) {
-        pdfFileNameTextField.setText(UUID.randomUUID().toString());
+    public void onCreate(ActionEvent actionEvent) {
+        Panel.open(Panel.CREATION);
     }
 
-    public void onCreate(ActionEvent actionEvent) {
+    public void createPdf(String fileName, org.apache.commons.lang3.tuple.Pair<Double, Integer> combination, boolean rotate90DegCcw, boolean rotate90DegCw, boolean flipHorizontal, boolean flipVertical, boolean isGrayscale) {
         final var fileChooser = new FileChooser();
 
         fileChooser.setTitle("Save the PDF file");
         fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("PDF (*.pdf)", "*.pdf"));
+        fileChooser.setInitialFileName(fileName.concat(".pdf"));
 
-        fileChooser.initialFileNameProperty().bind(pdfFileNameTextField.textProperty().concat(".pdf"));
-
-        var file = fileChooser.showSaveDialog(root.getScene().getWindow());
+        var file = fileChooser.showSaveDialog(Panel.getCurrentStage());
 
         final var task = new Task<>() {
             @Override
             protected Void call() throws Exception {
                 try (var document = new PDDocument()) {
-                    var files = ((FlowPane) repository.getContent()).getChildren().stream().filter(node -> node instanceof Thumbnail).map(node -> ((Thumbnail) node).getImageInfo().getOriginalFile()).toList();
+                    var information = document.getDocumentInformation();
+                    var files = getFiles();
                     var rectangle = pageSizeChoiceBox.getValue().getRectangle();
                     PDRectangle pageSize;
 
                     for (var file : files) {
-                        PDImageXObject image = null;
-
-                        if (FilenameUtils.isExtension(file.getName(), "webp")) {
-                            image = PDImageXObject.createFromByteArray(document, Utility.webpToJpg(file).toArray(), null);
-                        } else {
-                            image = PDImageXObject.createFromFile(file.getAbsolutePath(), document);
-                        }
+                        var transformedImage = Utility.transformation(file, combination.getLeft(), combination.getRight(), rotate90DegCcw, rotate90DegCw, flipHorizontal, flipVertical, isGrayscale);
+                        var image = PDImageXObject.createFromByteArray(document, transformedImage, null);
 
                         if (Objects.isNull(rectangle)) {
                             pageSize = pageOrientationChoiceBox.getValue() == PageOrientation.Landscape ? new PDRectangle(image.getHeight(), image.getWidth()) : new PDRectangle(image.getWidth(), image.getHeight());
@@ -175,31 +195,57 @@ public class AppController implements Initializable {
 
                         document.addPage(page);
 
-                        var imageWidth = image.getWidth();
-                        var imageHeight = image.getHeight();
+                        var imageWidth = (float) image.getWidth();
+                        var imageHeight = (float) image.getHeight();
 
                         var pageWidth = page.getMediaBox().getWidth();
                         var pageHeight = page.getMediaBox().getHeight();
 
                         var widthScale = pageWidth / imageWidth;
                         var heightScale = pageHeight / imageHeight;
-                        var scale = Math.min(widthScale, heightScale); // Maintain aspect ratio
+                        var scale = Math.min(widthScale, heightScale);
 
                         var newWidth = imageWidth * scale;
                         var newHeight = imageHeight * scale;
 
+                        var alpha = Math.min(newWidth, newHeight);
+                        var beta = Math.max(newWidth, newHeight);
+
+                        var imageRatio = beta / alpha;
+
                         switch (pageMarginChoiceBox.getSelectionModel().getSelectedItem()) {
                             case Small -> {
-                                newWidth -= 48; // 0.5 inch
-                                newHeight -= 48; // 0.5 inch
+                                // 0.5 inch:
+
+                                if (newWidth >= newHeight) {
+                                    newWidth -= ONE_HALF_INCH_MARGIN;
+                                    newHeight -= ONE_HALF_INCH_MARGIN / imageRatio;
+                                } else {
+                                    newWidth -= ONE_HALF_INCH_MARGIN / imageRatio;
+                                    newHeight -= ONE_HALF_INCH_MARGIN;
+                                }
                             }
                             case Medium -> {
-                                newWidth -= 96; // 1 inch
-                                newHeight -= 96; // 1 inch
+                                // 1 inch:
+
+                                if (newWidth >= newHeight) {
+                                    newWidth -= ONE_INCH_MARGIN;
+                                    newHeight -= ONE_INCH_MARGIN / imageRatio;
+                                } else {
+                                    newWidth -= ONE_INCH_MARGIN / imageRatio;
+                                    newHeight -= ONE_INCH_MARGIN;
+                                }
                             }
                             case Large -> {
-                                newWidth -= 144; // 1.5 inch
-                                newHeight -= 144; // 1.5 inch
+                                // 1.5 inch:
+
+                                if (newWidth >= newHeight) {
+                                    newWidth -= THREE_HALVES_INCH_MARGIN;
+                                    newHeight -= THREE_HALVES_INCH_MARGIN / imageRatio;
+                                } else {
+                                    newWidth -= THREE_HALVES_INCH_MARGIN / imageRatio;
+                                    newHeight -= THREE_HALVES_INCH_MARGIN;
+                                }
                             }
                         }
 
@@ -209,6 +255,15 @@ public class AppController implements Initializable {
                         try (var contentStream = new PDPageContentStream(document, page)) {
                             contentStream.drawImage(image, x, y, newWidth, newHeight);
                         }
+                    }
+
+                    if (Objects.nonNull(metadata)) {
+                        information.setTitle(metadata.getTitle());
+                        information.setAuthor(metadata.getAuthor());
+                        information.setSubject(metadata.getSubject());
+                        information.setProducer(metadata.getProducer());
+                        information.setCreator(metadata.getCreator());
+                        information.setKeywords(metadata.getKeywords());
                     }
 
                     document.save(file);
@@ -224,13 +279,14 @@ public class AppController implements Initializable {
                 super.running();
                 taskIsRunningProperty.set(true);
                 disableTopControls(true);
+                Panel.close();
             }
 
             @Override
             protected void succeeded() {
                 super.succeeded();
-                Notification.create("Done!", "Your PDF file is ready, follow the link:", Duration.minutes(1), "Open File", e -> {
-                    App.application.getHostServices().showDocument(file.getAbsolutePath());
+                Notification.create("Done!", "PDF file is ready, follow the link:", Duration.minutes(1), "Open file", e -> {
+                    App.getApplication().getHostServices().showDocument(file.getAbsolutePath());
                 });
                 disableTopControls(false);
             }
@@ -255,8 +311,25 @@ public class AppController implements Initializable {
         };
 
         if (Objects.nonNull(file)) {
-            Job.create("Creating PDF file", "Your PDF file is ready", "We couldn't create the PDF file", file.getAbsolutePath(), task);
+            Job.create(
+                    "Creating PDF file",
+                    "PDF file is ready",
+                    "We couldn't create PDF file",
+                    file.getAbsolutePath(),
+                    task
+            );
         }
+    }
+
+    private List<File> getFiles() {
+        final var repositoryContent = (FlowPane) repository.getContent();
+        return repositoryContent
+                .getChildren()
+                .stream()
+                .filter(node -> node instanceof Thumbnail)
+                .map(node -> ((Thumbnail) node))
+                .map(thumbnail -> thumbnail.getImageInfo().getOriginalFile())
+                .toList();
     }
 
     public void onImportFiles(ActionEvent actionEvent) {
@@ -266,6 +339,7 @@ public class AppController implements Initializable {
         fileChooser.setTitle("Import Image Files");
         fileChooser.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter("JPEG (*.jpeg)", "*.jpg", "*.jpeg"),
+                new FileChooser.ExtensionFilter("JPEG 2000 (*.jp2)", "*.jp2"),
                 new FileChooser.ExtensionFilter("Portable Network Graphics (*.png)", "*.png"),
                 new FileChooser.ExtensionFilter("Bitmap (*.bmp)", "*.bmp"),
                 new FileChooser.ExtensionFilter("WebP (*.webp)", "*.webp")
@@ -274,7 +348,7 @@ public class AppController implements Initializable {
         final var files = fileChooser.showOpenMultipleDialog(root.getScene().getWindow());
 
         if (Objects.nonNull(files) && !files.isEmpty()) {
-            Job.create("Importing image files", "Your files are imported", "We're not able to import files", new Task<Void>() {
+            Job.create("Importing image files", "Image files are imported", "We couldn't import image files", new Task<Void>() {
 
                 private final List<Thumbnail> thumbnails = new ArrayList<>();
 
@@ -288,7 +362,7 @@ public class AppController implements Initializable {
                         }
 
                         try {
-                            thumbnails.add(Thumbnail.create(files.get(index), Utility.resize(files.get(index), 130.0D), numberOfCurrentThumbnails + index + 1));
+                            thumbnails.add(Thumbnail.create(files.get(index), Utility.resize(files.get(index), Thumbnail.IMAGE_SIZE * 3), numberOfCurrentThumbnails + index + 1));
                             updateProgress(numberOfCurrentThumbnails + index + 1, files.size());
                         } catch (IOException e) {
                             throw new RuntimeException(e);
@@ -314,7 +388,7 @@ public class AppController implements Initializable {
         }
     }
 
-    public void onCurrentJobs(ActionEvent actionEvent) {
+    public void onJobs(ActionEvent actionEvent) {
         final var toggleButton = (ToggleButton) actionEvent.getSource();
 
         if (toggleButton.isSelected()) {
@@ -327,12 +401,14 @@ public class AppController implements Initializable {
     }
 
     public void setImageInfo(String fileName, long fileSize, String filePath, int filePage, int fileWidth, int fileHeight) {
-        fileNameTextField.setText(fileName);
-        fileSizeTextField.setText(String.format("%.2f MB", new UnitOf.DataStorage().fromBytes(fileSize).toMegabytes()));
-        filePathTextField.setText(filePath);
-        filePageNumberTextField.setText(Integer.toString(filePage));
-        fileDimensionTextField.setText(String.format("%d × %d", fileWidth, fileHeight));
-        imageInfoPanel.setVisible(true);
+        if (showImageInfoToggleSwitch.isSelected()) {
+            fileNameTextField.setText(fileName);
+            fileSizeTextField.setText(String.format("%.2f MB", new UnitOf.DataStorage().fromBytes(fileSize).toMegabytes()));
+            filePathTextField.setText(filePath);
+            filePageNumberTextField.setText(Integer.toString(filePage));
+            fileDimensionTextField.setText(String.format("%d × %d pixels", fileWidth, fileHeight));
+            imageInfoPanel.setVisible(true);
+        }
     }
 
     public void closeImageInfo() {
@@ -346,43 +422,17 @@ public class AppController implements Initializable {
 
     public void updateDetails() {
         final var repositoryContent = (FlowPane) repository.getContent();
+        final var size = new UnitOf
+                .DataStorage()
+                .fromBytes(repositoryContent
+                        .getChildren()
+                        .stream()
+                        .filter(node -> node instanceof Thumbnail)
+                        .map(node -> ((Thumbnail) node).getImageInfo().getSize())
+                        .mapToLong(Long::longValue).sum())
+                .toMegabytes();
         pageCountLabel.setText(String.format("Pages: %d", repositoryContent.getChildren().size()));
-        documentSizeLabel.setText(String.format("Size: %.2f MB", new UnitOf.DataStorage().fromBytes(repositoryContent.getChildren().stream().filter(node -> node instanceof Thumbnail).map(node -> ((Thumbnail) node).getImageInfo().getSize()).mapToLong(Long::longValue).sum()).toMegabytes()));
-    }
-
-    private void initPdfFileNameTextFieldContextMenu() {
-        final var contextMenu = new ContextMenu();
-        final var cutMenuItem = new MenuItem("Cut");
-        final var copyMenuItem = new MenuItem("Copy");
-        final var pasteMenuItem = new MenuItem("Paste");
-        final var selectAllMenuItem = new MenuItem("Select All");
-        final var deleteMenuItem = new MenuItem("Delete");
-        final var uuidMenuItem = new MenuItem("Get a GUID");
-
-        cutMenuItem.setOnAction(event -> pdfFileNameTextField.cut());
-        copyMenuItem.setOnAction(event -> pdfFileNameTextField.copy());
-        pasteMenuItem.setOnAction(event -> pdfFileNameTextField.paste());
-        selectAllMenuItem.setOnAction(event -> pdfFileNameTextField.selectAll());
-        deleteMenuItem.setOnAction(event -> pdfFileNameTextField.clear());
-        uuidMenuItem.setOnAction(event -> pdfFileNameTextField.setText(UUID.randomUUID().toString()));
-
-        cutMenuItem.disableProperty().bind(pdfFileNameTextField.selectedTextProperty().isEmpty());
-        copyMenuItem.disableProperty().bind(pdfFileNameTextField.selectedTextProperty().isEmpty());
-        selectAllMenuItem.disableProperty().bind(pdfFileNameTextField.textProperty().isEmpty());
-        deleteMenuItem.disableProperty().bind(pdfFileNameTextField.textProperty().isEmpty());
-
-        contextMenu.getItems().addAll(
-                cutMenuItem,
-                copyMenuItem,
-                pasteMenuItem,
-                new SeparatorMenuItem(),
-                selectAllMenuItem,
-                deleteMenuItem,
-                new SeparatorMenuItem(),
-                uuidMenuItem
-        );
-
-        pdfFileNameTextField.setContextMenu(contextMenu);
+        sizeLabel.setText(String.format("Size: %s%.2f MB", size > 0.0D ? "~" : "", size));
     }
 
     private void initPageOrientationChoiceBox() {
@@ -418,19 +468,19 @@ public class AppController implements Initializable {
         pageSizeChoiceBox.getItems().add(resizeToImageSizeOption);
         pageSizeChoiceBox.setValue(defaultPageSize);
 
-        pageSizeChoiceBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue == resizeToImageSizeOption) {
-                pageOrientationChoiceBox.getSelectionModel().select(PageOrientation.Portrait);
-                pageOrientationChoiceBox.setDisable(true);
-            } else {
-                pageOrientationChoiceBox.setDisable(false);
+        pageOrientationChoiceBox.disableProperty().bind(Bindings.createBooleanBinding(() -> {
+            if (pageSizeChoiceBox.getSelectionModel().getSelectedItem() == resizeToImageSizeOption) {
+                pageOrientationChoiceBox.setValue(PageOrientation.Portrait);
+                return true;
             }
-        });
+
+            return false;
+        }, pageSizeChoiceBox.valueProperty()));
     }
 
     private void setJobsPanelDummyLabel() {
         final var jobsPanelContent = (VBox) jobsPanel.getContent();
-        final var dummyLabel = new Label("No job is currently in progress");
+        final var dummyLabel = new Label("No job is in progress");
 
         VBox.setVgrow(dummyLabel, Priority.ALWAYS);
         dummyLabel.setMaxWidth(Double.MAX_VALUE);
@@ -455,42 +505,10 @@ public class AppController implements Initializable {
         });
     }
 
-    private void setJobsPanelContextMenu() {
-        final var jobsPanelContent = (VBox) jobsPanel.getContent();
-        final var contextMenu = new ContextMenu();
-        final var cancelAllJobsMenuItem = new MenuItem("Cancel All Jobs");
-        final var clearMenuItem = new MenuItem("Clear");
-
-        cancelAllJobsMenuItem.setOnAction((ActionEvent actionEvent) -> {
-            jobsPanelContent.getChildren().stream().filter(node -> node instanceof VBox).map(node -> (Job) node).forEach(job -> {
-                Platform.runLater(() -> job.cancel.run());
-            });
-        });
-
-        clearMenuItem.setOnAction((ActionEvent actionEvent) -> {
-            jobsPanelContent.getChildren().stream().filter(node -> node instanceof VBox).map(node -> (Job) node).forEach(job -> {
-                Platform.runLater(() -> job.clear.run());
-            });
-        });
-
-        cancelAllJobsMenuItem.setDisable(true);
-        contextMenu.getItems().addAll(cancelAllJobsMenuItem, clearMenuItem);
-
-        jobsPanelContent.addEventFilter(ContextMenuEvent.CONTEXT_MENU_REQUESTED, Event::consume);
-        jobsPanelContent.addEventFilter(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
-            if (mouseEvent.getButton() == MouseButton.SECONDARY) {
-                var point2D = jobsPanelContent.localToScreen(mouseEvent.getX(), mouseEvent.getY());
-                contextMenu.show(jobsPanelContent, point2D.getX(), point2D.getY());
-            } else {
-                contextMenu.hide();
-            }
-        });
-    }
-
     private void setRepositoryDummyLabel() {
         final var parent = (StackPane) repository.getParent();
         final var repositoryContent = (FlowPane) repository.getContent();
-        final var dummyLabel = new Label("No image has been imported yet!");
+        final var dummyLabel = new Label("No images have been added");
 
         dummyLabel.getStyleClass().add("dummy-label");
 
@@ -505,17 +523,33 @@ public class AppController implements Initializable {
         });
     }
 
-    public void onAboutMe(ActionEvent actionEvent) {
-        Panel.open(Panel.ABOUT_ME);
+    public void onAboutUs(ActionEvent actionEvent) {
+        Panel.open(Panel.ABOUT);
     }
 
     public void disableTopControls(boolean disable) {
         newPdfFileButton.setDisable(disable);
         importFilesButton.setDisable(disable);
-        pageSizeChoiceBox.setDisable(disable);
-        pageMarginChoiceBox.setDisable(disable);
-        pageOrientationChoiceBox.setDisable(disable);
-        pdfFileNameTextField.setDisable(disable);
-        guidButton.setDisable(disable);
+    }
+
+    public void onMetadata(ActionEvent actionEvent) {
+        Panel.open(Panel.METADATA);
+    }
+
+    public void setMenu() {
+        final var contextMenu = new ContextMenu();
+        final var settingsMenuItem = new MenuItem("Settings");
+        final var aboutMenuItem = new MenuItem("About");
+
+        settingsMenuItem.setDisable(true);
+        aboutMenuItem.setOnAction(event -> Panel.open(Panel.ABOUT));
+
+        contextMenu.getItems().addAll(settingsMenuItem, aboutMenuItem);
+
+        menuButton.setOnContextMenuRequested(Event::consume);
+        menuButton.setOnMouseClicked(event -> {
+            var point2D = menuButton.localToScreen(event.getX(), event.getY());
+            contextMenu.show(menuButton, point2D.getX(), point2D.getY());
+        });
     }
 }

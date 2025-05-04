@@ -7,7 +7,7 @@
     <developer_name>Mohammadreza Faraji</developer_name>
 
     <releases>
-        <release version="1.0.1" date="2025-04-24">
+        <release version="1.1.2" date="2025-04-24">
             <description>
                 <ul>
                     <li>Fixed drag-and-drop and PNG thumbnail issues</li>
@@ -37,9 +37,13 @@
     </categories>
 
     <keywords>
-        <keyword>PDF</keyword>
+        <keyword>pdf</keyword>
         <keyword>document</keyword>
         <keyword>photo</keyword>
+        <keyword>convert</keyword>
+        <keyword>image</keyword>
+        <keyword>compress</keyword>
+        <keyword>scan</keyword>
     </keywords>
 
     <branding>

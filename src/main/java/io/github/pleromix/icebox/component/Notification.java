@@ -53,12 +53,12 @@ public class Notification extends VBox {
         notification.timeline.getKeyFrames().add(new KeyFrame(Duration.ZERO, new KeyValue(notification.translateXProperty(), -332, Interpolator.EASE_OUT), new KeyValue(notification.opacityProperty(), 0.0D, Interpolator.EASE_OUT)));
         notification.timeline.getKeyFrames().add(new KeyFrame(Duration.millis(250), new KeyValue(notification.translateXProperty(), 0.0D, Interpolator.EASE_IN), new KeyValue(notification.opacityProperty(), 1.0D, Interpolator.EASE_IN)));
         notification.timeline.getKeyFrames().add(new KeyFrame(timeout, "close", new KeyValue(notification.translateXProperty(), 0.0D, Interpolator.EASE_IN), new KeyValue(notification.opacityProperty(), 1.0D, Interpolator.EASE_IN)));
-        notification.timeline.getKeyFrames().add(new KeyFrame(timeout.add(Duration.millis(200)), e -> App.controller.root.getChildren().remove(notification), new KeyValue(notification.translateXProperty(), -332, Interpolator.EASE_OUT), new KeyValue(notification.opacityProperty(), 0.0D, Interpolator.EASE_OUT)));
+        notification.timeline.getKeyFrames().add(new KeyFrame(timeout.add(Duration.millis(200)), e -> App.getController().root.getChildren().remove(notification), new KeyValue(notification.translateXProperty(), -332, Interpolator.EASE_OUT), new KeyValue(notification.opacityProperty(), 0.0D, Interpolator.EASE_OUT)));
         notification.timeline.play();
 
         notifications.push(notification);
 
-        App.controller.root.getChildren().add(notification);
+        App.getController().root.getChildren().add(notification);
     }
 
     public static void create(String title, String content) {

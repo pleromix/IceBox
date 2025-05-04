@@ -18,7 +18,7 @@ high-quality PDF document. Built with Java, it runs on Linux via Flatpak.
 
 ### 🔹 From Flathub (Recommended)
 
-> 🚧 Pending approval on Flathub. Once available:
+> IceBox is available on Flathub. To install it, run the following command:
 
 ```bash
 flatpak install flathub io.github.pleromix.IceBox

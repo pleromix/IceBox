@@ -1,0 +1,21 @@
+This application integrates several high-quality open-source libraries to deliver robust features and ensure a smooth user experience. We gratefully acknowledge the developers and communities behind the following libraries:
+
+OpenPnP OpenCV (v4.9.0-0)
+A Java wrapper for OpenCV, enabling powerful computer vision capabilities for image processing and analysis.
+
+Apache Commons IO (v2.17.0)
+A utility library from the Apache Software Foundation that simplifies input/output operations and file handling in Java.
+
+Apache Commons Lang (v3.17.0)
+A widely-used library that extends the core functionality of Java, offering helper methods for strings, numbers, concurrency, and more.
+
+Project Lombok
+A code-generation tool that reduces boilerplate in Java by automatically generating getters, setters, constructors, and other common methods.
+
+Apache PDFBox (v3.0.4)
+A powerful Java library for creating, manipulating, and extracting content from PDF documents.
+
+UnitOf (v1.0.1)
+A flexible and lightweight library for unit conversion across various measurement systems.
+
+We thank the open-source community for their incredible contributions. These libraries play a vital role in making this application both efficient and feature-rich.

@@ -41,9 +41,12 @@ public class Job extends AnchorPane {
     }
 
     public static void create(String titleWhileRunning, String titleWhileFinished, String titleWhileFailed, String linkPath, Task<?> task) {
-        final var panelContent = (VBox) App.controller.jobsPanel.getContent();
+        final var panelContent = (VBox) App.getController().jobsPanel.getContent();
         final var job = new Job();
-        final var toggleButton = App.controller.currentJobsToggleButton;
+        final var toggleButton = App.getController().jobsToggleButton;
+        final var tooltip = new Tooltip();
+
+        Tooltip.install(job, tooltip);
 
         job.cancel = () -> {
             task.cancel();
@@ -63,19 +66,20 @@ public class Job extends AnchorPane {
         job.titleLabel.setText(titleWhileRunning);
         job.progressBar.setProgress(Double.NEGATIVE_INFINITY);
         job.progressBar.progressProperty().bind(task.progressProperty());
-        job.cancelButton.setOnAction(event -> {
-            job.cancel.run();
-        });
+        job.cancelButton.setOnAction(event -> job.cancel.run());
+
+        tooltip.setText(titleWhileRunning);
 
         task.addEventFilter(WorkerStateEvent.WORKER_STATE_SUCCEEDED, e -> {
             job.timeline.play();
             job.titleLabel.setText(titleWhileFinished);
+            tooltip.setText(titleWhileFinished);
 
             if (Objects.nonNull(linkPath)) {
                 job.titleLabel.setGraphic(job.linkButton);
 
                 job.linkButton.setOnAction(event -> {
-                    App.application.getHostServices().showDocument(linkPath);
+                    App.getApplication().getHostServices().showDocument(linkPath);
                 });
             }
         });
@@ -85,6 +89,7 @@ public class Job extends AnchorPane {
             job.statusIcon.getStyleClass().add("failed");
             job.timeline.play();
             job.titleLabel.setText(titleWhileFailed);
+            tooltip.setText(titleWhileFailed);
             Notification.create("Warning", "Something went wrong!");
         });
 
@@ -100,8 +105,8 @@ public class Job extends AnchorPane {
     private void initialize() {
         final var cancelIcon = new Region();
         final var linkIcon = new Region();
-        final var cancelTooltip = new Tooltip("Cancel the job");
-        final var linkTooltip = new Tooltip("Open the file");
+        final var cancelTooltip = new Tooltip("Cancel job");
+        final var linkTooltip = new Tooltip("Open file");
 
         setPrefHeight(42.0D);
 

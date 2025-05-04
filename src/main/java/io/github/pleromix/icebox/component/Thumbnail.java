@@ -3,6 +3,8 @@ package io.github.pleromix.icebox.component;
 import io.github.pleromix.icebox.App;
 import io.github.pleromix.icebox.dto.ImageInfo;
 import io.github.pleromix.icebox.util.Utility;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.css.PseudoClass;
 import javafx.event.Event;
 import javafx.geometry.Insets;
@@ -27,8 +29,13 @@ import java.util.TreeSet;
 
 public class Thumbnail extends StackPane {
 
+    public enum ViewSize {
+        SMALL, NORMAL, LARGE
+    }
+
     private static final TreeSet<Integer> selectedItems = new TreeSet<>(Comparator.naturalOrder());
-    public static final double IMAGE_SIZE = 130.0D;
+    public static final double IMAGE_SIZE = 70.0D;
+    public static final ObjectProperty<ViewSize> viewSizeProperty = new SimpleObjectProperty<>(ViewSize.NORMAL);
 
     private static Thumbnail draggedThumbnail;
     private static boolean isOutsideOfRoot;
@@ -50,7 +57,7 @@ public class Thumbnail extends StackPane {
     }
 
     private static void removeSelected() {
-        final var repositoryContent = (FlowPane) App.controller.repository.getContent();
+        final var repositoryContent = (FlowPane) App.getController().repository.getContent();
         final var thumbnails = repositoryContent.getChildren().stream().map(node -> (Thumbnail) node).filter(Thumbnail::isSelected).toList();
 
         for (var thumbnail : thumbnails) {
@@ -59,8 +66,8 @@ public class Thumbnail extends StackPane {
 
         reorderPages();
 
-        App.controller.closeImageInfo();
-        App.controller.updateDetails();
+        App.getController().closeImageInfo();
+        App.getController().updateDetails();
     }
 
     public static void removeAll() {
@@ -77,26 +84,27 @@ public class Thumbnail extends StackPane {
         thumbnail.tooltip = new Tooltip(String.format("Page: %d", thumbnail.imageInfo.getPage()));
         Tooltip.install(thumbnail, thumbnail.tooltip);
 
-        if (thumbnailImage.getWidth() < IMAGE_SIZE) {
-            thumbnail.imageView.setFitWidth(thumbnailImage.getWidth());
-            thumbnail.imageView.setFitHeight(thumbnailImage.getHeight());
-        }
+        thumbnail.setSize(viewSizeProperty.getValue(), thumbnailImage);
+
+        viewSizeProperty.addListener((observable, oldValue, newValue) -> thumbnail.setSize(newValue, thumbnailImage));
 
         return thumbnail;
     }
 
     private static void selectRange(int x, int y) {
-        final var repositoryContent = (FlowPane) App.controller.repository.getContent();
+        final var repositoryContent = (FlowPane) App.getController().repository.getContent();
 
         if (y == -1) {
             repositoryContent.getChildren().subList(x, repositoryContent.getChildren().size()).stream().map(node -> (Thumbnail) node).forEach(Thumbnail::select);
         } else {
             repositoryContent.getChildren().subList(x, y + 1).stream().map(node -> (Thumbnail) node).forEach(Thumbnail::select);
         }
+
+        App.getController().closeImageInfo();
     }
 
     private static void reorderPages() {
-        final var repositoryContent = (FlowPane) App.controller.repository.getContent();
+        final var repositoryContent = (FlowPane) App.getController().repository.getContent();
         repositoryContent.getChildren().stream().map(node -> (Thumbnail) node).forEach(thumbnail -> {
             final var page = repositoryContent.getChildren().indexOf(thumbnail) + 1;
             thumbnail.imageInfo.setPage(page);
@@ -109,21 +117,23 @@ public class Thumbnail extends StackPane {
     }
 
     private void initialize() {
-        final var repositoryContent = (FlowPane) App.controller.repository.getContent();
+        final var repositoryContent = (FlowPane) App.getController().repository.getContent();
         final var children = repositoryContent.getChildren();
         final var contextMenu = new ContextMenu();
-        final var icon = new Region();
+        final var removeIcon = new Region();
+        final var selectAllIcon = new Region();
         final var removeMenuItem = new MenuItem("Remove");
+        final var selectAllMenuItem = new MenuItem("Select All");
 
         addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
 
-            var point = App.controller.repository.screenToLocal(event.getScreenX(), event.getScreenY());
-            var bounds = App.controller.repository.getBoundsInParent();
+            var point = App.getController().repository.screenToLocal(event.getScreenX(), event.getScreenY());
+            var bounds = App.getController().repository.getBoundsInParent();
 
             if (point.getX() <= bounds.getWidth() / 2) {
-                StackPane.setAlignment(App.controller.imageInfoPanel, Pos.TOP_RIGHT);
+                StackPane.setAlignment(App.getController().imageInfoPanel, Pos.BOTTOM_RIGHT);
             } else if (point.getX() > bounds.getWidth() / 2) {
-                StackPane.setAlignment(App.controller.imageInfoPanel, Pos.TOP_LEFT);
+                StackPane.setAlignment(App.getController().imageInfoPanel, Pos.BOTTOM_LEFT);
             }
 
             final var index = children.indexOf(this);
@@ -134,7 +144,7 @@ public class Thumbnail extends StackPane {
                 if (event.isShiftDown()) {
                     if (selectedItems.size() >= 2) {
                         selectRange(selectedItems.getFirst(), selectedItems.getLast());
-                        App.controller.closeImageInfo();
+                        App.getController().closeImageInfo();
                         return;
                     }
                 } else if (isSelected) {
@@ -147,19 +157,18 @@ public class Thumbnail extends StackPane {
                 imageInfo.setPage(index + 1);
 
                 if (!event.isControlDown()) {
-                    App.controller.setImageInfo(imageInfo.getName(), imageInfo.getSize(), imageInfo.getOriginalFile().getAbsolutePath(), imageInfo.getPage(), imageInfo.getWidth(), imageInfo.getHeight());
+                    App.getController().setImageInfo(imageInfo.getName(), imageInfo.getSize(), imageInfo.getOriginalFile().getAbsolutePath(), imageInfo.getPage(), imageInfo.getWidth(), imageInfo.getHeight());
                 } else {
-                    App.controller.closeImageInfo();
+                    App.getController().closeImageInfo();
                 }
             }
         });
 
         addEventFilter(MouseDragEvent.DRAG_DETECTED, event -> {
             deselectAll();
-            System.out.println("OK");
             draggedThumbnail = this;
             startFullDrag();
-            App.controller.root.setCursor(Cursor.CLOSED_HAND);
+            App.getController().root.setCursor(Cursor.CLOSED_HAND);
             pseudoClassStateChanged(dragged, true);
             event.consume();
         });
@@ -173,7 +182,7 @@ public class Thumbnail extends StackPane {
         });
 
         Runnable mouseDragReleasedAction = () -> {
-            App.controller.root.setCursor(Cursor.DEFAULT);
+            App.getController().root.setCursor(Cursor.DEFAULT);
             reorderPages();
             pseudoClassStateChanged(dragged, false);
 
@@ -182,33 +191,36 @@ public class Thumbnail extends StackPane {
             }
         };
 
-        App.controller.root.addEventFilter(MouseDragEvent.MOUSE_DRAG_RELEASED, e -> mouseDragReleasedAction.run());
-        App.controller.root.addEventFilter(MouseEvent.MOUSE_ENTERED, e -> isOutsideOfRoot = false);
-        App.controller.root.addEventFilter(MouseEvent.MOUSE_EXITED, e -> isOutsideOfRoot = true);
+        App.getController().root.addEventFilter(MouseDragEvent.MOUSE_DRAG_RELEASED, e -> mouseDragReleasedAction.run());
+        App.getController().root.addEventFilter(MouseEvent.MOUSE_ENTERED, e -> isOutsideOfRoot = false);
+        App.getController().root.addEventFilter(MouseEvent.MOUSE_EXITED, e -> isOutsideOfRoot = true);
 
-        App.primaryStage.addEventFilter(MouseEvent.MOUSE_RELEASED, event -> {
+        App.getPrimaryStage().addEventFilter(MouseEvent.MOUSE_RELEASED, event -> {
             if (isOutsideOfRoot) {
                 mouseDragReleasedAction.run();
             }
         });
 
-        App.controller.repository.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
+        App.getController().repository.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
             if (event.getTarget() != this && event.getButton() != MouseButton.SECONDARY && !(event.isControlDown() || event.isShiftDown())) {
                 deselect();
                 selectedItems.clear();
             }
         });
 
-        App.controller.repository.setOnKeyPressed(event -> {
+        App.getController().repository.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.DELETE) {
                 removeSelected();
             }
         });
 
         removeMenuItem.setOnAction(event -> removeSelected());
-        icon.getStyleClass().addAll("icon", "remove-icon");
-        removeMenuItem.setGraphic(icon);
-        contextMenu.getItems().add(removeMenuItem);
+        selectAllMenuItem.setOnAction(event -> selectAll());
+        removeIcon.getStyleClass().addAll("icon", "remove-icon");
+        selectAllIcon.getStyleClass().addAll("icon", "select-icon");
+        removeMenuItem.setGraphic(removeIcon);
+        selectAllMenuItem.setGraphic(selectAllIcon);
+        contextMenu.getItems().addAll(removeMenuItem, selectAllMenuItem);
 
         addEventFilter(ContextMenuEvent.CONTEXT_MENU_REQUESTED, Event::consume);
 
@@ -217,13 +229,13 @@ public class Thumbnail extends StackPane {
                 if (mouseEvent.getButton() == MouseButton.SECONDARY) {
                     var point2D = localToScreen(mouseEvent.getX(), mouseEvent.getY());
                     contextMenu.show(this, point2D.getX(), point2D.getY());
-                } else {
-                    contextMenu.hide();
                 }
+            } else {
+                contextMenu.hide();
             }
         });
 
-        App.controller.imageFileRemoveButton.setOnAction(event -> removeMenuItem.fire());
+        App.getController().imageFileRemoveButton.setOnAction(event -> removeMenuItem.fire());
 
         imageView.setFitWidth(IMAGE_SIZE);
         imageView.setFitHeight(IMAGE_SIZE);
@@ -237,6 +249,20 @@ public class Thumbnail extends StackPane {
         getChildren().add(imageView);
     }
 
+    private void setSize(ViewSize newValue, Image thumbnailImage) {
+        switch (newValue) {
+            case SMALL:
+                calculateSize(1.25D, thumbnailImage);
+                break;
+            case NORMAL:
+                calculateSize(2.0D, thumbnailImage);
+                break;
+            case LARGE:
+                calculateSize(3.0D, thumbnailImage);
+                break;
+        }
+    }
+
     public void select() {
         isSelected = true;
         pseudoClassStateChanged(selected, true);
@@ -245,11 +271,25 @@ public class Thumbnail extends StackPane {
     public void deselect() {
         isSelected = false;
         pseudoClassStateChanged(selected, false);
-        App.controller.closeImageInfo();
+        App.getController().closeImageInfo();
     }
 
     public void deselectAll() {
-        final var repositoryContent = (FlowPane) App.controller.repository.getContent();
+        final var repositoryContent = (FlowPane) App.getController().repository.getContent();
         repositoryContent.getChildren().stream().map(node -> (Thumbnail) node).forEach(Thumbnail::deselect);
+    }
+
+    private void calculateSize(double factor, Image thumbnailImage) {
+        if (Math.max(thumbnailImage.getWidth(), thumbnailImage.getHeight()) < IMAGE_SIZE) {
+            imageView.setFitWidth(thumbnailImage.getWidth());
+            imageView.setFitHeight(thumbnailImage.getHeight());
+        } else {
+            imageView.setFitWidth(IMAGE_SIZE * factor);
+            imageView.setFitHeight(IMAGE_SIZE * factor);
+        }
+
+        setMinSize(IMAGE_SIZE * factor + 8.0D, IMAGE_SIZE * factor + 8.0D);
+        setPrefSize(IMAGE_SIZE * factor + 8.0D, IMAGE_SIZE * factor + 8.0D);
+        setMaxSize(IMAGE_SIZE * factor + 8.0D, IMAGE_SIZE * factor + 8.0D);
     }
 }

@@ -43,7 +43,7 @@ public final class MessageBox {
         var messageBox = new MessageBox();
         var flag = true;
         Runnable close = () -> {
-            App.controller.root.getChildren().remove(messageBox.overlay);
+            App.getController().root.getChildren().remove(messageBox.overlay);
             messageBox.stage.close();
         };
         Button defaultButton = null;
@@ -91,13 +91,13 @@ public final class MessageBox {
                 throw new RuntimeException("Unhandled MessageType: " + messageType);
         }
 
-        App.controller.root.getChildren().add(messageBox.overlay);
+        App.getController().root.getChildren().add(messageBox.overlay);
 
         if (Objects.nonNull(defaultButton)) {
             defaultButton.requestFocus();
         }
 
-        messageBox.stage.initOwner(App.primaryStage);
+        messageBox.stage.initOwner(App.getPrimaryStage());
         messageBox.stage.initModality(Modality.WINDOW_MODAL);
         messageBox.stage.show();
 

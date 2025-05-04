@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import io.github.pleromix.icebox.component.CurveBinder?>
+<?import io.github.pleromix.icebox.component.ToggleSwitch?>
+<?import java.lang.String?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" stylesheets="@css/app.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.github.pleromix.icebox.controller.CreationController">
+   <children>
+      <VBox styleClass="about" AnchorPane.bottomAnchor="24.0" AnchorPane.leftAnchor="24.0" AnchorPane.rightAnchor="24.0" AnchorPane.topAnchor="24.0">
+         <children>
+            <Label styleClass="panel-title" text="Create PDF File">
+               <graphic>
+                  <Region>
+                     <styleClass>
+                        <String fx:value="icon" />
+                        <String fx:value="create-icon" />
+                     </styleClass>
+                  </Region>
+               </graphic>
+            </Label>
+            <Label maxWidth="1.7976931348623157E308" prefWidth="250.0" styleClass="note" text="The following settings will be applied to all imported images." wrapText="true" VBox.vgrow="ALWAYS" />
+            <Label text="Compression:" />
+            <VBox alignment="CENTER" fillWidth="false" maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS">
+               <children>
+                  <CurveBinder fx:id="curveBinder" />
+               </children>
+            </VBox>
+            <Label layoutX="34.0" layoutY="78.0" text="Transformation:" />
+            <GridPane hgap="8.0" vgap="8.0">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <ToggleButton fx:id="flipHorizontalToggleButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Flip Horizontal" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1">
+                     <graphic>
+                        <Region>
+                           <styleClass>
+                              <String fx:value="icon" />
+                              <String fx:value="flip-horizontal-icon" />
+                           </styleClass>
+                        </Region>
+                     </graphic>
+                  </ToggleButton>
+                  <ToggleButton fx:id="flipVerticalToggleButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Flip Vertical" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1">
+                     <graphic>
+                        <Region>
+                           <styleClass>
+                              <String fx:value="icon" />
+                              <String fx:value="flip-vertical-icon" />
+                           </styleClass>
+                        </Region>
+                     </graphic>
+                  </ToggleButton>
+                  <ToggleButton fx:id="rotate90DegCwToggleButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Rotate 90° CW" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS">
+                     <graphic>
+                        <Region>
+                           <styleClass>
+                              <String fx:value="icon" />
+                              <String fx:value="rotate-cw-icon" />
+                           </styleClass>
+                        </Region>
+                     </graphic>
+                     <toggleGroup>
+                        <ToggleGroup fx:id="rotateToggleGroup" />
+                     </toggleGroup>
+                  </ToggleButton>
+                  <ToggleButton fx:id="rotate90DegCcwToggleButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Rotate 90° CCW" toggleGroup="$rotateToggleGroup" GridPane.hgrow="ALWAYS">
+                     <graphic>
+                        <Region>
+                           <styleClass>
+                              <String fx:value="icon" />
+                              <String fx:value="rotate-ccw-icon" />
+                           </styleClass>
+                        </Region>
+                     </graphic>
+                  </ToggleButton>
+                  <Label maxWidth="1.7976931348623157E308" text="Make PDF file grayscale" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" />
+                  <ToggleSwitch fx:id="grayscaleToggleSwitch" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+               </children>
+            </GridPane>
+            <HBox spacing="4.0">
+               <children>
+                  <TextField fx:id="pdfFileNameTextField" promptText="File Name" HBox.hgrow="ALWAYS">
+                     <tooltip>
+                        <Tooltip text="The name for your PDF file can be set here" />
+                     </tooltip>
+                  </TextField>
+                  <Button fx:id="guidButton" mnemonicParsing="false" onAction="#onGuid" text="GUID">
+                     <graphic>
+                        <Region>
+                           <styleClass>
+                              <String fx:value="icon" />
+                              <String fx:value="guid-icon" />
+                           </styleClass>
+                        </Region>
+                     </graphic>
+                     <tooltip>
+                        <Tooltip text="Click to generate an unique name" />
+                     </tooltip>
+                  </Button>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER_RIGHT" spacing="4.0">
+               <children>
+                  <Button mnemonicParsing="false" onAction="#onClose" text="Close" />
+                  <Button fx:id="applyButton" defaultButton="true" layoutX="460.0" layoutY="10.0" mnemonicParsing="false" onAction="#onApply" text="Apply" />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

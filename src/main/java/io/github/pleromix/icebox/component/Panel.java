@@ -16,16 +16,20 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
+import lombok.Getter;
 
 import java.io.IOException;
 import java.util.Objects;
 
 public class Panel {
 
-    public static final String ABOUT_ME = "about-me";
+    public static final String ABOUT = "about";
+    public static final String METADATA = "metadata";
+    public static final String CREATION = "creation";
 
     private static final StackPane overlay = new StackPane();
 
+    @Getter
     private static Stage currentStage;
 
     private Panel() {
@@ -65,9 +69,11 @@ public class Panel {
                 }
             });
 
-            App.controller.root.getChildren().add(overlay);
+            stage.setOnCloseRequest(event -> close());
 
-            stage.initOwner(App.primaryStage);
+            App.getController().root.getChildren().add(overlay);
+
+            stage.initOwner(App.getPrimaryStage());
             stage.initModality(Modality.WINDOW_MODAL);
             stage.show();
 
@@ -87,9 +93,9 @@ public class Panel {
     }
 
     public static void close() {
-        if (Objects.nonNull(currentStage) && currentStage != App.primaryStage) {
+        if (Objects.nonNull(currentStage) && currentStage != App.getPrimaryStage()) {
             currentStage.close();
-            App.controller.root.getChildren().remove(overlay);
+            App.getController().root.getChildren().remove(overlay);
             currentStage = null;
         }
     }
