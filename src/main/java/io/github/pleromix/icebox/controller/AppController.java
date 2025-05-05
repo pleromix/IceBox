@@ -5,7 +5,10 @@ import io.github.pleromix.icebox.App;
 import io.github.pleromix.icebox.component.*;
 import io.github.pleromix.icebox.dto.Metadata;
 import io.github.pleromix.icebox.dto.PageSize;
+import io.github.pleromix.icebox.util.Config;
 import io.github.pleromix.icebox.util.Utility;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.beans.InvalidationListener;
 import javafx.beans.binding.Bindings;
@@ -102,8 +105,6 @@ public class AppController implements Initializable {
     public Button menuButton;
     @FXML
     public Slider viewSizeSlider;
-    @FXML
-    public ToggleSwitch showImageInfoToggleSwitch;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -136,6 +137,14 @@ public class AppController implements Initializable {
         viewSizeSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
             Thumbnail.viewSizeProperty.set(Thumbnail.ViewSize.values()[newValue.intValue()]);
         });
+
+        if (Config.getInstance().getShowWelcomePanel()) {
+            Platform.runLater(() -> {
+                new Timeline(new KeyFrame(Duration.millis(250), event -> {
+                    Panel.open(Panel.WELCOME);
+                })).play();
+            });
+        }
     }
 
     public void onNewPdfFile(ActionEvent actionEvent) {
@@ -151,7 +160,6 @@ public class AppController implements Initializable {
             pageSizeChoiceBox.getSelectionModel().select(defaultPageSize);
             pageMarginChoiceBox.getSelectionModel().select(PageMargin.None);
             pageOrientationChoiceBox.getSelectionModel().select(PageOrientation.Portrait);
-            showImageInfoToggleSwitch.setSelected(false);
             viewSizeSlider.setValue(1.0D);
 
             Notification.closeShowingNotification();
@@ -385,6 +393,8 @@ public class AppController implements Initializable {
                     getException().printStackTrace();
                 }
             });
+
+            Panel.close();
         }
     }
 
@@ -401,7 +411,7 @@ public class AppController implements Initializable {
     }
 
     public void setImageInfo(String fileName, long fileSize, String filePath, int filePage, int fileWidth, int fileHeight) {
-        if (showImageInfoToggleSwitch.isSelected()) {
+        if (Config.getInstance().getShowImageInfo()) {
             fileNameTextField.setText(fileName);
             fileSizeTextField.setText(String.format("%.2f MB", new UnitOf.DataStorage().fromBytes(fileSize).toMegabytes()));
             filePathTextField.setText(filePath);
@@ -541,10 +551,11 @@ public class AppController implements Initializable {
         final var settingsMenuItem = new MenuItem("Settings");
         final var aboutMenuItem = new MenuItem("About");
 
-        settingsMenuItem.setDisable(true);
+        settingsMenuItem.setOnAction(event -> Panel.open(Panel.SETTINGS));
         aboutMenuItem.setOnAction(event -> Panel.open(Panel.ABOUT));
 
         contextMenu.getItems().addAll(settingsMenuItem, aboutMenuItem);
+        contextMenu.getStyleClass().add("main-menu");
 
         menuButton.setOnContextMenuRequested(Event::consume);
         menuButton.setOnMouseClicked(event -> {

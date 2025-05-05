@@ -3,6 +3,7 @@ package io.github.pleromix.icebox.component;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -10,17 +11,17 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
-import javafx.scene.Group;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.util.Duration;
 
 import java.util.Objects;
 
-public class ToggleSwitch extends Group {
+public class ToggleSwitch extends Pane {
 
     private final ObjectProperty<EventHandler<MouseEvent>> onToggleProperty = new SimpleObjectProperty<>();
     private final BooleanProperty selected = new SimpleBooleanProperty(false);
@@ -40,21 +41,25 @@ public class ToggleSwitch extends Group {
         onLabel.getStyleClass().add("toggle-switch-on");
         offLabel.getStyleClass().add("toggle-switch-off");
 
-        onLabel.setPrefSize(50.0D, 20.0D);
-        offLabel.setPrefSize(50.0D, 20.0D);
+        onLabel.setPrefSize(40.0D, 16.0D);
+        offLabel.setPrefSize(40.0D, 16.0D);
 
         thumb.setStroke(Color.TRANSPARENT);
         thumb.setFill(Color.valueOf("#fff"));
-        thumb.setCenterY(10.0D);
+        thumb.setCenterY(8.0D);
+
+        onLabel.setMouseTransparent(true);
+        offLabel.setMouseTransparent(true);
+        thumb.setMouseTransparent(true);
 
         setCursor(Cursor.HAND);
 
         if (isSelected()) {
-            thumb.setCenterX(40.0D);
+            thumb.setCenterX(32.0D);
             onLabel.setOpacity(1.0D);
             offLabel.setOpacity(0.0D);
         } else {
-            thumb.setCenterX(10.0D);
+            thumb.setCenterX(8.0D);
             onLabel.setOpacity(0.0D);
             offLabel.setOpacity(1.0D);
         }
@@ -68,7 +73,7 @@ public class ToggleSwitch extends Group {
                                 Duration.ZERO,
                                 new KeyValue(
                                         thumb.centerXProperty(),
-                                        10.0D
+                                        8.0D
                                 ),
                                 new KeyValue(
                                         onLabel.opacityProperty(),
@@ -83,7 +88,7 @@ public class ToggleSwitch extends Group {
                                 Duration.millis(100.0D),
                                 new KeyValue(
                                         thumb.centerXProperty(),
-                                        40.0D
+                                        32.0D
                                 ),
                                 new KeyValue(
                                         onLabel.opacityProperty(),
@@ -101,7 +106,7 @@ public class ToggleSwitch extends Group {
                                 Duration.ZERO,
                                 new KeyValue(
                                         thumb.centerXProperty(),
-                                        40.0D
+                                        32.0D
                                 ),
                                 new KeyValue(
                                         onLabel.opacityProperty(),
@@ -116,7 +121,7 @@ public class ToggleSwitch extends Group {
                                 Duration.millis(100.0D),
                                 new KeyValue(
                                         thumb.centerXProperty(),
-                                        10.0D
+                                        8.0D
                                 ),
                                 new KeyValue(
                                         onLabel.opacityProperty(),
@@ -131,13 +136,25 @@ public class ToggleSwitch extends Group {
             }
         });
 
-        addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
+        EventHandler<MouseEvent> mouseClickedEventHandler = event -> {
             if (event.getButton() == MouseButton.PRIMARY) {
                 selected.set(!selected.get());
 
                 if (Objects.nonNull(onToggleProperty.get())) {
                     onToggleProperty.get().handle(event);
                 }
+            }
+        };
+
+        addEventFilter(MouseEvent.MOUSE_CLICKED, mouseClickedEventHandler);
+
+        Platform.runLater(() -> {
+            if (Objects.nonNull(getParent()) && getParent() instanceof Label) {
+                getParent().addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
+                    if (!(event.getTarget() instanceof ToggleSwitch)) {
+                        mouseClickedEventHandler.handle(event);
+                    }
+                });
             }
         });
     }

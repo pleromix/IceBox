@@ -47,7 +47,6 @@
               <rowConstraints>
                 <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                 <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
                   <ToggleButton fx:id="flipHorizontalToggleButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Flip Horizontal" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1">
@@ -93,10 +92,13 @@
                         </Region>
                      </graphic>
                   </ToggleButton>
-                  <Label maxWidth="1.7976931348623157E308" text="Make PDF file grayscale" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" />
-                  <ToggleSwitch fx:id="grayscaleToggleSwitch" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
                </children>
             </GridPane>
+            <Label graphicTextGap="8.0" maxWidth="1.7976931348623157E308" text="Make PDF file grayscale">
+               <graphic>
+                  <ToggleSwitch fx:id="grayscaleToggleSwitch" />
+               </graphic>
+            </Label>
             <HBox spacing="4.0">
                <children>
                   <TextField fx:id="pdfFileNameTextField" promptText="File Name" HBox.hgrow="ALWAYS">

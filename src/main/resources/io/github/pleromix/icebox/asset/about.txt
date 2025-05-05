@@ -3,6 +3,9 @@ This application integrates several high-quality open-source libraries to delive
 OpenPnP OpenCV (v4.9.0-0)
 A Java wrapper for OpenCV, enabling powerful computer vision capabilities for image processing and analysis.
 
+Apache PDFBox (v3.0.4)
+A powerful Java library for creating, manipulating, and extracting content from PDF documents.
+
 Apache Commons IO (v2.17.0)
 A utility library from the Apache Software Foundation that simplifies input/output operations and file handling in Java.
 
@@ -11,9 +14,6 @@ A widely-used library that extends the core functionality of Java, offering help
 
 Project Lombok
 A code-generation tool that reduces boilerplate in Java by automatically generating getters, setters, constructors, and other common methods.
-
-Apache PDFBox (v3.0.4)
-A powerful Java library for creating, manipulating, and extracting content from PDF documents.
 
 UnitOf (v1.0.1)
 A flexible and lightweight library for unit conversion across various measurement systems.

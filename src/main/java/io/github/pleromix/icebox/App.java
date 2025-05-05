@@ -1,19 +1,18 @@
 package io.github.pleromix.icebox;
 
+import io.github.pleromix.icebox.component.MessageBox;
 import io.github.pleromix.icebox.controller.AppController;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
+import javafx.util.Pair;
 import lombok.Getter;
 import nu.pattern.OpenCV;
 
-import java.awt.*;
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Paths;
+import java.util.List;
 
 public class App extends Application {
 
@@ -47,5 +46,20 @@ public class App extends Application {
         stage.setTitle("IceBox Application");
         stage.setScene(scene);
         stage.show();
+        
+        stage.setOnCloseRequest(event -> {
+            event.consume();
+
+            MessageBox.create(
+                    "Exit Application",
+                    "Do you want to exit from application?",
+                    MessageBox.MessageType.Question,
+                    List.of(
+                            new Pair<>("Yes", e -> Platform.exit()),
+                            new Pair<>("No", e -> {
+                            })
+                    )
+            );
+        });
     }
 }

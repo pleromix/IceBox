@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import io.github.pleromix.icebox.component.ToggleSwitch?>
+<?import java.lang.String?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" stylesheets="@css/app.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.github.pleromix.icebox.controller.WelcomeController">
+   <children>
+      <VBox prefWidth="500.0" styleClass="about" AnchorPane.bottomAnchor="24.0" AnchorPane.leftAnchor="24.0" AnchorPane.rightAnchor="24.0" AnchorPane.topAnchor="24.0">
+         <children>
+            <Label styleClass="panel-title" text="Welcome to IceBox">
+               <graphic>
+                  <Region>
+                     <styleClass>
+                        <String fx:value="icon" />
+                        <String fx:value="welcome-icon" />
+                     </styleClass>
+                  </Region>
+               </graphic>
+            </Label>
+            <Label text="Get started by selecting an option below:" />
+            <GridPane hgap="8.0" vgap="8.0">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="50.0" />
+                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" percentWidth="50.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="100.0" valignment="CENTER" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Button contentDisplay="TOP" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onClose" text="Skip to App" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS">
+                     <graphic>
+                        <Region>
+                           <styleClass>
+                              <String fx:value="large-icon" />
+                              <String fx:value="skip-icon" />
+                           </styleClass>
+                        </Region>
+                     </graphic></Button>
+                  <Button contentDisplay="TOP" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onAddImages" text="Add Images" GridPane.hgrow="ALWAYS">
+                     <graphic>
+                        <Region>
+                           <styleClass>
+                              <String fx:value="large-icon" />
+                              <String fx:value="add-icon" />
+                           </styleClass>
+                        </Region>
+                     </graphic></Button>
+               </children>
+            </GridPane>
+            <Label graphicTextGap="8.0" text="Display the welcome panel on startup">
+               <graphic>
+                  <ToggleSwitch fx:id="showWelcomePanelToggleSwitch" selected="true" />
+               </graphic>
+            </Label>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

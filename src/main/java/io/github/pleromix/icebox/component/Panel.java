@@ -26,6 +26,8 @@ public class Panel {
     public static final String ABOUT = "about";
     public static final String METADATA = "metadata";
     public static final String CREATION = "creation";
+    public static final String WELCOME = "welcome";
+    public static final String SETTINGS = "settings";
 
     private static final StackPane overlay = new StackPane();
 

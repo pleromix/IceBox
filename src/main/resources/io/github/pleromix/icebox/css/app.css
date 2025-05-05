@@ -123,6 +123,14 @@
     -fx-pref-height: 18;
 }
 
+.button .large-icon {
+    -fx-background-size: 32;
+    -fx-background-position: center;
+    -fx-background-repeat: no-repeat;
+    -fx-pref-width: 32;
+    -fx-pref-height: 32;
+}
+
 .toggle-button .icon {
     -fx-background-size: 18;
     -fx-background-position: center;
@@ -544,11 +552,11 @@
 }
 
 .create-icon {
-    -fx-background-image: url('../icon/convert-32px.png');
+    -fx-background-image: url('../icon/electricity-32px.png');
 }
 
 .import-icon {
-    -fx-background-image: url('../icon/folder-32px.png');
+    -fx-background-image: url('../icon/add-image-32px.png');
 }
 
 .pdf-icon {
@@ -591,6 +599,14 @@
 .flip-vertical-icon {
     -fx-background-image: url('../icon/flip-horizontal-32px.png');
     -fx-rotate: 90deg;
+}
+
+.add-icon {
+    -fx-background-image: url('../icon/add-image-32px.png');
+}
+
+.skip-icon {
+    -fx-background-image: url('../icon/go-32px.png');
 }
 
 .job {
@@ -802,15 +818,27 @@
 }
 
 .panel-title .icon {
-    -fx-background-size: 24;
+    -fx-background-size: 32;
     -fx-background-repeat: no-repeat;
     -fx-background-position: center;
-    -fx-pref-width: 24;
-    -fx-pref-height: 24;
+    -fx-pref-width: 32;
+    -fx-pref-height: 32;
 }
 
 .panel-title .create-icon {
-    -fx-background-image: url('../icon/convert-32px.png');
+    -fx-background-image: url('../icon/electricity-32px.png');
+}
+
+.panel-title .welcome-icon {
+    -fx-background-image: url('../icon/cursor-32px.png');
+}
+
+.panel-title .metadata-icon {
+    -fx-background-image: url('../icon/metadata-32px.png');
+}
+
+.panel-title .settings-icon {
+    -fx-background-image: url('../icon/wrench-32px.png');
 }
 
 .menu-button {
@@ -860,16 +888,22 @@
 .toggle-switch-on {
     -fx-background-color: #00B569;
     -fx-background-radius: 10;
-    -fx-padding: 0 0 0 10;
-    -fx-font-size: 0.9em;
+    -fx-padding: 0 0 0 6;
     -fx-text-fill: #fff;
+    -fx-font-size: 0.8em;
 }
 
 .toggle-switch-off {
     -fx-background-color: #888;
     -fx-background-radius: 10;
-    -fx-padding: 0 10 0 0;
-    -fx-font-size: 0.9em;
+    -fx-padding: 0 6 0 0;
     -fx-text-fill: #fff;
+    -fx-font-size: 0.8em;
 }
 
+.main-menu {
+}
+
+.main-menu .menu-item {
+    -fx-padding: 0.2em 1.6em;
+}
