@@ -4,6 +4,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -46,9 +47,13 @@
                   <TextField fx:id="subjectTextField" promptText="Subject" GridPane.rowIndex="1" />
                   <TextField fx:id="producerTextField" layoutX="10.0" layoutY="41.0" promptText="Producer" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                   <TextField fx:id="creatorTextField" layoutX="131.0" layoutY="11.0" promptText="Creator" GridPane.rowIndex="2" />
-                  <TextField fx:id="keywordsTextField" layoutX="10.0" layoutY="82.0" promptText="Keywords" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <TextField fx:id="keywordsTextField" layoutX="10.0" layoutY="82.0" promptText="Keywords" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                     <tooltip>
+                        <Tooltip text="Use commas to separate keywords, e.g., hello, world" />
+                     </tooltip></TextField>
                </children>
             </GridPane>
+            <Label fx:id="noteLabel" maxWidth="1.7976931348623157E308" styleClass="note" text="Each text field allows a maximum of 0 characters" wrapText="true" />
             <HBox alignment="CENTER_RIGHT" spacing="4.0">
                <children>
                   <Button mnemonicParsing="false" onAction="#onClose" text="Close" />

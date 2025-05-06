@@ -26,17 +26,22 @@
                      </graphic></Label>
                </children>
             </HBox>
-            <Label text="Use following options to change the application behaviour:" />
+            <Label text="Use the options below to change the application's behavior:" />
             <VBox spacing="4.0">
                <children>
-                  <Label graphicTextGap="8.0" text="Show Image Info when clicking on an image">
+                  <Label graphicTextGap="8.0" text="Show the Image Info when the image is clicked">
                      <graphic>
                         <ToggleSwitch fx:id="showImageInfoToggleSwitch" />
                      </graphic>
                   </Label>
-                  <Label graphicTextGap="8.0" text="Display the welcome panel on startup">
+                  <Label graphicTextGap="8.0" text="Show the Welcome panel on startup">
                      <graphic>
                         <ToggleSwitch fx:id="showWelcomePanelToggleSwitch" />
+                     </graphic>
+                  </Label>
+                  <Label graphicTextGap="8.0" layoutX="10.0" layoutY="34.0" text="Ask before exiting the application">
+                     <graphic>
+                        <ToggleSwitch fx:id="askBeforeExitingApplicationToggleSwitch" />
                      </graphic>
                   </Label>
                </children>

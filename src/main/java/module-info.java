@@ -10,6 +10,7 @@ module io.github.pleromix.icebox {
     requires org.apache.pdfbox;
     requires static lombok;
     requires java.sql;
+    requires java.management;
 
     opens io.github.pleromix.icebox to javafx.fxml;
     opens io.github.pleromix.icebox.controller to javafx.fxml;

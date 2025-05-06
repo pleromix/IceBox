@@ -161,6 +161,7 @@ public class AppController implements Initializable {
             pageMarginChoiceBox.getSelectionModel().select(PageMargin.None);
             pageOrientationChoiceBox.getSelectionModel().select(PageOrientation.Portrait);
             viewSizeSlider.setValue(1.0D);
+            metadata = null;
 
             Notification.closeShowingNotification();
         }), new Pair<>("No", e -> {
@@ -533,10 +534,6 @@ public class AppController implements Initializable {
         });
     }
 
-    public void onAboutUs(ActionEvent actionEvent) {
-        Panel.open(Panel.ABOUT);
-    }
-
     public void disableTopControls(boolean disable) {
         newPdfFileButton.setDisable(disable);
         importFilesButton.setDisable(disable);
@@ -550,11 +547,34 @@ public class AppController implements Initializable {
         final var contextMenu = new ContextMenu();
         final var settingsMenuItem = new MenuItem("Settings");
         final var aboutMenuItem = new MenuItem("About");
+        final var exitMenuItem = new MenuItem("Exit");
 
         settingsMenuItem.setOnAction(event -> Panel.open(Panel.SETTINGS));
         aboutMenuItem.setOnAction(event -> Panel.open(Panel.ABOUT));
+        exitMenuItem.setOnAction(event -> {
+            if (Config.getInstance().getAskBeforeExitingApplication()) {
+                event.consume();
 
-        contextMenu.getItems().addAll(settingsMenuItem, aboutMenuItem);
+                MessageBox.create(
+                        "Exit Application",
+                        "Are you sure you want to exit the application?",
+                        MessageBox.MessageType.Question,
+                        List.of(
+                                new Pair<>("Yes", e -> Platform.exit()),
+                                new Pair<>("No", e -> {
+                                })
+                        )
+                );
+            } else {
+                Platform.exit();
+            }
+        });
+
+        contextMenu.getItems().addAll(
+                settingsMenuItem,
+                aboutMenuItem,
+                exitMenuItem
+        );
         contextMenu.getStyleClass().add("main-menu");
 
         menuButton.setOnContextMenuRequested(Event::consume);

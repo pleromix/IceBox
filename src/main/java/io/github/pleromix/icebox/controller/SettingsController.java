@@ -16,11 +16,14 @@ public class SettingsController implements Initializable {
     public ToggleSwitch showImageInfoToggleSwitch;
     @FXML
     public ToggleSwitch showWelcomePanelToggleSwitch;
+    @FXML
+    public ToggleSwitch askBeforeExitingApplicationToggleSwitch;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         showWelcomePanelToggleSwitch.selectedProperty().bindBidirectional(Config.getInstance().showWelcomePanelProperty);
         showImageInfoToggleSwitch.selectedProperty().bindBidirectional(Config.getInstance().showImageInfoProperty);
+        askBeforeExitingApplicationToggleSwitch.selectedProperty().bindBidirectional(Config.getInstance().askBeforeExitingApplicationProperty);
     }
 
     public void onClose(ActionEvent actionEvent) {

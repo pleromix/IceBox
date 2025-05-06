@@ -1,6 +1,5 @@
 package io.github.pleromix.icebox.util;
 
-import com.digidemic.unitof.B;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import org.apache.commons.io.FileUtils;
@@ -25,6 +24,7 @@ public final class Config {
 
     public final BooleanProperty showWelcomePanelProperty = new SimpleBooleanProperty();
     public final BooleanProperty showImageInfoProperty = new SimpleBooleanProperty();
+    public final BooleanProperty askBeforeExitingApplicationProperty = new SimpleBooleanProperty();
 
     private Config() {
         initialize();
@@ -54,9 +54,11 @@ public final class Config {
 
             showWelcomePanelProperty.addListener((observable, oldValue, newValue) -> setShowWelcomePanel(newValue));
             showImageInfoProperty.addListener((observable, oldValue, newValue) -> setShowImageInfo(newValue));
+            askBeforeExitingApplicationProperty.addListener((observable, oldValue, newValue) -> setAskBeforeExitingApplication(newValue));
 
             showWelcomePanelProperty.set(getShowWelcomePanel());
             showImageInfoProperty.set(getShowImageInfo());
+            askBeforeExitingApplicationProperty.set(getAskBeforeExitingApplication());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -85,6 +87,15 @@ public final class Config {
 
     public void setShowImageInfo(Boolean showImageInfo) {
         appProperties.setProperty("show-image-info", showImageInfo.toString());
+        save();
+    }
+
+    public Boolean getAskBeforeExitingApplication() {
+        return Boolean.valueOf(appProperties.getProperty("ask-before-exiting-application"));
+    }
+
+    public void setAskBeforeExitingApplication(Boolean askBeforeExitingApplication) {
+        appProperties.setProperty("ask-before-exiting-application", askBeforeExitingApplication.toString());
         save();
     }
 }

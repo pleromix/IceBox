@@ -8,13 +8,18 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
 
 import java.net.URL;
 import java.util.Objects;
 import java.util.ResourceBundle;
+import java.util.function.UnaryOperator;
 
 public class MetadataController implements Initializable {
+
+    private static final int MAX_LENGTH = 128;
 
     @FXML
     public TextField titleTextField;
@@ -32,6 +37,8 @@ public class MetadataController implements Initializable {
     public Button applyButton;
     @FXML
     public Button removeButton;
+    @FXML
+    public Label noteLabel;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -48,24 +55,59 @@ public class MetadataController implements Initializable {
         }
 
         applyButton.disableProperty().bind(
-                titleTextField.textProperty().isEmpty()
+                titleTextField
+                        .textProperty()
+                        .isEmpty()
                         .and(authorTextField.textProperty().isEmpty())
                         .and(subjectTextField.textProperty().isEmpty())
                         .and(producerTextField.textProperty().isEmpty())
                         .and(creatorTextField.textProperty().isEmpty())
                         .and(keywordsTextField.textProperty().isEmpty())
         );
+
+        final UnaryOperator<TextFormatter.Change> changeUnaryOperator = change -> {
+            if (change.getControlNewText().length() > MAX_LENGTH) {
+                return null;
+            }
+
+            if (change.getText().matches("[\\sa-zA-Z0-9_-]*")) {
+                return change;
+            }
+
+            return null;
+        };
+
+        final UnaryOperator<TextFormatter.Change> keywordsChangeUnaryOperator = change -> {
+            if (change.getControlNewText().length() > MAX_LENGTH) {
+                return null;
+            }
+
+            if (change.getText().matches("[\\sa-zA-Z0-9,]*")) {
+                return change;
+            }
+
+            return null;
+        };
+
+        titleTextField.setTextFormatter(new TextFormatter<>(changeUnaryOperator));
+        authorTextField.setTextFormatter(new TextFormatter<>(changeUnaryOperator));
+        subjectTextField.setTextFormatter(new TextFormatter<>(changeUnaryOperator));
+        producerTextField.setTextFormatter(new TextFormatter<>(changeUnaryOperator));
+        creatorTextField.setTextFormatter(new TextFormatter<>(changeUnaryOperator));
+        keywordsTextField.setTextFormatter(new TextFormatter<>(keywordsChangeUnaryOperator));
+
+        noteLabel.setText(String.format("Each text field allows a maximum of %d characters.", MAX_LENGTH));
     }
 
     public void onApply(ActionEvent actionEvent) {
         final var metadata = new Metadata();
 
-        metadata.setTitle(titleTextField.getText().trim());
-        metadata.setAuthor(authorTextField.getText().trim());
-        metadata.setSubject(subjectTextField.getText().trim());
-        metadata.setProducer(producerTextField.getText().trim());
-        metadata.setCreator(creatorTextField.getText().trim());
-        metadata.setKeywords(keywordsTextField.getText().trim());
+        metadata.setTitle(titleTextField.getText().trim().replaceAll("\\s{2,}", " "));
+        metadata.setAuthor(authorTextField.getText().trim().replaceAll("\\s{2,}", " "));
+        metadata.setSubject(subjectTextField.getText().trim().replaceAll("\\s{2,}", " "));
+        metadata.setProducer(producerTextField.getText().trim().replaceAll("\\s{2,}", " "));
+        metadata.setCreator(creatorTextField.getText().trim().replaceAll("\\s{2,}", " "));
+        metadata.setKeywords(keywordsTextField.getText().trim().replaceAll(",", "").replaceAll("\\s{2,}", " ").replaceAll("\\s", ", ").replaceAll(",$", ""));
 
         App.getController().setMetadata(metadata);
 

@@ -17,7 +17,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" stylesheets="@css/app.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.github.pleromix.icebox.controller.CreationController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" stylesheets="@css/app.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.github.pleromix.icebox.controller.OptimizationController">
    <children>
       <VBox styleClass="about" AnchorPane.bottomAnchor="24.0" AnchorPane.leftAnchor="24.0" AnchorPane.rightAnchor="24.0" AnchorPane.topAnchor="24.0">
          <children>
@@ -31,7 +31,7 @@
                   </Region>
                </graphic>
             </Label>
-            <Label maxWidth="1.7976931348623157E308" prefWidth="250.0" styleClass="note" text="The following settings will be applied to all imported images." wrapText="true" VBox.vgrow="ALWAYS" />
+            <Label maxWidth="1.7976931348623157E308" styleClass="note" text="Only the final PDF will be affected by these settings." wrapText="true" VBox.vgrow="ALWAYS" />
             <Label text="Compression:" />
             <VBox alignment="CENTER" fillWidth="false" maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS">
                <children>
@@ -81,6 +81,9 @@
                      <toggleGroup>
                         <ToggleGroup fx:id="rotateToggleGroup" />
                      </toggleGroup>
+                     <tooltip>
+                        <Tooltip text="Rotate 90° Clockwise" />
+                     </tooltip>
                   </ToggleButton>
                   <ToggleButton fx:id="rotate90DegCcwToggleButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Rotate 90° CCW" toggleGroup="$rotateToggleGroup" GridPane.hgrow="ALWAYS">
                      <graphic>
@@ -91,6 +94,9 @@
                            </styleClass>
                         </Region>
                      </graphic>
+                     <tooltip>
+                        <Tooltip text="Rotate 90° Counterclockwise" />
+                     </tooltip>
                   </ToggleButton>
                </children>
             </GridPane>
@@ -103,7 +109,7 @@
                <children>
                   <TextField fx:id="pdfFileNameTextField" promptText="File Name" HBox.hgrow="ALWAYS">
                      <tooltip>
-                        <Tooltip text="The name for your PDF file can be set here" />
+                        <Tooltip text="Set the name of the PDF file" />
                      </tooltip>
                   </TextField>
                   <Button fx:id="guidButton" mnemonicParsing="false" onAction="#onGuid" text="GUID">

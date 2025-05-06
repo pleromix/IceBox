@@ -35,7 +35,7 @@
 .text-field {
     -fx-background-color: #f2f2f2, #f2f2f2;
     -fx-background-insets: 0, 1;
-    -fx-background-radius: 3, 2;
+    -fx-background-radius: 5, 4;
     -fx-padding: 0.35em 0.6em;
 }
 
@@ -72,11 +72,10 @@
     -fx-background-radius: 0;
 }
 
-
 .button, .toggle-button {
     -fx-background-color: #ddd, linear-gradient(to bottom, #fff 90%, #fafafa 90%);
     -fx-background-insets: 0, 1;
-    -fx-background-radius: 3, 2;
+    -fx-background-radius: 5, 4;
     -fx-padding: 0.35em 0.6em;
     -fx-cursor: hand;
 }
@@ -84,7 +83,7 @@
 .button:default, .toggle-button:default {
     -fx-background-color: -fx-focus-color, linear-gradient(to bottom, #fff 90%, #fafafa 90%);
     -fx-background-insets: 0, 2;
-    -fx-background-radius: 4, 2;
+    -fx-background-radius: 5, 3;
 }
 
 .button:hover, .toggle-button:hover {
@@ -94,7 +93,7 @@
 .button:default:hover, .toggle-button:default:hover {
     -fx-background-color: #ccc, linear-gradient(to bottom, #fff 90%, #eee 90%);
     -fx-background-insets: 0, 1;
-    -fx-background-radius: 4, 3;
+    -fx-background-radius: 5, 3;
 }
 
 .button:pressed, .toggle-button:pressed {
@@ -246,7 +245,7 @@
 .choice-box {
     -fx-background-color: #ddd, linear-gradient(to bottom, #fff 90%, #fafafa 90%);
     -fx-background-insets: 0, 1;
-    -fx-background-radius: 3, 2;
+    -fx-background-radius: 5, 4;
     -fx-padding: 0;
     -fx-cursor: hand;
 }
@@ -292,7 +291,7 @@
 
 .context-menu {
     -fx-background-color: #fff;
-    -fx-background-radius: 2;
+    -fx-background-radius: 5;
     -fx-padding: 0.6em 0 0.6em 0;
     -fx-text-fill: #444;
     -fx-effect: dropshadow(gaussian, #0002, 16, 0, 0, 4);
@@ -552,7 +551,7 @@
 }
 
 .create-icon {
-    -fx-background-image: url('../icon/electricity-32px.png');
+    -fx-background-image: url('../icon/stack-32px.png');
 }
 
 .import-icon {
@@ -565,10 +564,6 @@
 
 .remove-icon {
     -fx-background-image: url('../icon/remove-32px.png');
-}
-
-.about-us-icon {
-    -fx-background-image: url('../icon/about-32px.png');
 }
 
 .guid-icon {
@@ -669,10 +664,18 @@
 
 .jobs-panel {
     -fx-background-color: #f6f6f6;
+    -fx-border-color: #0001;
+    -fx-border-width: 2 0 2 0;
+}
+
+.jobs-panel .content {
+    -fx-background-color: #f6f6f6;
 }
 
 .repository {
     -fx-background-color: #f6f6f6;
+    -fx-border-color: #0001;
+    -fx-border-width: 2 0 2 0;
 }
 
 .repository .content {
@@ -688,7 +691,7 @@
     -fx-background-color: #fff;
     -fx-background-radius: 2;
     -fx-border-color: #fff;
-    -fx-border-radius: 3;
+    -fx-border-radius: 5;
     -fx-border-width: 1;
     -fx-effect: dropshadow(gaussian, #0002, 2, 0, 0, 1);
 }
@@ -719,31 +722,30 @@
 }
 
 .details-box {
-    -fx-background-color: #eee;
-    -fx-spacing: 8;
-    -fx-padding: 8;
+    -fx-background-color: #fff;
+    -fx-spacing: 4;
 }
 
 .details-box .label {
     -fx-text-fill: #777;
-    -fx-background-color: #fff;
+    -fx-background-color: #f4f4f4;
+    -fx-background-insets: 0, 1;
     -fx-background-radius: 5;
-    -fx-padding: 2 6;
+    -fx-padding: 0.35em 0.6em;
     -fx-graphic-text-gap: 4;
-    -fx-font-size: 0.9em;
 }
 
 .details-box .page-icon {
     -fx-background-color: #777;
-    -fx-pref-width: 10;
-    -fx-pref-height: 13;
+    -fx-pref-width: 11;
+    -fx-pref-height: 15;
     -fx-shape: "M 0,0 V 16 H 12 V 5.167286 H 6.9120197 V 0 Z m 8,0 v 4.064436 h 4 z";
 }
 
 .details-box .disk-icon {
     -fx-background-color: #777;
-    -fx-pref-width: 13;
-    -fx-pref-height: 13;
+    -fx-pref-width: 15;
+    -fx-pref-height: 15;
     -fx-shape: "M 2.1166667 0 A 2.1166666 2.1166666 0 0 0 0 2.1166667 A 2.1166666 2.1166666 0 0 0 2.1166667 4.2333333 A 2.1166666 2.1166666 0 0 0 4.2333333 2.1166667 A 2.1166666 2.1166666 0 0 0 2.1166667 0 z M 2.1166667 1.3668416 A 0.75 0.75 0 0 1 2.8664917 2.1166667 A 0.75 0.75 0 0 1 2.1166667 2.8664917 A 0.75 0.75 0 0 1 1.3668416 2.1166667 A 0.75 0.75 0 0 1 2.1166667 1.3668416 z";
 }
 
@@ -767,6 +769,7 @@
     -fx-padding: 2 4;
     -fx-background-radius: 3 2;
     -fx-font-size: 0.9em;
+    -fx-text-fill: #666;
 }
 
 .image-info .text-field * {
@@ -826,7 +829,7 @@
 }
 
 .panel-title .create-icon {
-    -fx-background-image: url('../icon/electricity-32px.png');
+    -fx-background-image: url('../icon/stack-32px.png');
 }
 
 .panel-title .welcome-icon {
@@ -854,7 +857,7 @@
 }
 
 .slider .track {
-    -fx-background-color: transparent, #eee;
+    -fx-background-color: transparent, #e8e8e8;
     -fx-background-insets: 0, 3 0 3 0;
     -fx-background-radius: 0, 2;
     -fx-pref-height: 10;
@@ -905,5 +908,5 @@
 }
 
 .main-menu .menu-item {
-    -fx-padding: 0.2em 1.6em;
+    -fx-padding: 0.35em 1.6em;
 }

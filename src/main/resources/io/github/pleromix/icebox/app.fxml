@@ -21,11 +21,11 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<StackPane fx:id="root" prefHeight="700.0" prefWidth="1000.0" stylesheets="@css/app.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.github.pleromix.icebox.controller.AppController">
+<StackPane fx:id="root" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="900.0" stylesheets="@css/app.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.github.pleromix.icebox.controller.AppController">
    <children>
       <ScrollPane fitToHeight="true" fitToWidth="true">
          <content>
-            <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="16.0">
+            <VBox spacing="16.0">
                <padding>
                   <Insets bottom="24.0" left="24.0" right="24.0" top="24.0" />
                </padding>
@@ -36,9 +36,9 @@
                            <graphic>
                               <Region styleClass="icon" />
                            </graphic>
-                           <tooltip>
-                              <Tooltip text="Menu" />
-                           </tooltip>
+                           <HBox.margin>
+                              <Insets right="8.0" />
+                           </HBox.margin>
                         </Button>
                         <Button fx:id="newPdfFileButton" mnemonicParsing="false" onAction="#onNewPdfFile" text="New PDF">
                            <graphic>
@@ -73,9 +73,34 @@
                               </Region>
                            </graphic>
                            <tooltip>
-                              <Tooltip text="Click to create PDF" />
+                              <Tooltip text="Click to optimize and create PDF" />
                            </tooltip>
                         </Button>
+                        <HBox alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="details-box" HBox.hgrow="ALWAYS">
+                           <children>
+                              <Label fx:id="pageCountLabel" text="Pages: 0">
+                                 <graphic>
+                                    <Region styleClass="page-icon" />
+                                 </graphic>
+                                 <tooltip>
+                                    <Tooltip text="Total number of pages in the document" />
+                                 </tooltip>
+                              </Label>
+                              <Label fx:id="sizeLabel" text="Size: 0.00 MB">
+                                 <graphic>
+                                    <Region styleClass="disk-icon" />
+                                 </graphic>
+                                 <tooltip>
+                                    <Tooltip text="Total approximate size of image files in megabytes" />
+                                 </tooltip>
+                              </Label>
+                              <Label contentDisplay="RIGHT" text="View Size">
+                                 <graphic>
+                                    <Slider fx:id="viewSizeSlider" blockIncrement="1.0" majorTickUnit="1.0" max="2.0" minorTickCount="0" prefWidth="75.0" snapToTicks="true" value="1.0" />
+                                 </graphic>
+                              </Label>
+                           </children>
+                        </HBox>
                      </children>
                   </HBox>
                   <HBox alignment="CENTER_LEFT" fillHeight="false" spacing="4.0">
@@ -122,130 +147,105 @@
                         </VBox>
                      </children>
                   </HBox>
-                  <HBox VBox.vgrow="ALWAYS">
+                  <VBox spacing="2.0" VBox.vgrow="ALWAYS">
                      <children>
-                        <VBox styleClass="tab-container">
+                        <HBox VBox.vgrow="ALWAYS">
                            <children>
-                              <Group>
+                              <VBox styleClass="tab-container">
                                  <children>
-                                    <ToggleButton fx:id="jobsToggleButton" mnemonicParsing="false" onAction="#onJobs" selected="true" styleClass="tab-button" text="Jobs" />
-                                 </children>
-                              </Group>
-                           </children>
-                        </VBox>
-                        <SplitPane fx:id="mainSplitPane" dividerPositions="0.5" HBox.hgrow="ALWAYS">
-                           <items>
-                              <ScrollPane fx:id="jobsPanel" fitToHeight="true" fitToWidth="true" maxWidth="250.0" minWidth="200.0" prefViewportHeight="1.0" prefWidth="250.0" styleClass="jobs-panel">
-                                 <content>
-                                    <VBox spacing="4.0" styleClass="jobs-panel">
-                                       <padding>
-                                          <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
-                                       </padding>
-                                    </VBox>
-                                 </content>
-                              </ScrollPane>
-                              <VBox>
-                                 <children>
-                                    <StackPane minHeight="-Infinity" minWidth="-Infinity" VBox.vgrow="ALWAYS">
+                                    <Group>
                                        <children>
-                                          <ScrollPane fx:id="repository" fitToHeight="true" fitToWidth="true" prefViewportHeight="1.0" styleClass="repository">
-                                             <content>
-                                                <FlowPane hgap="8.0" prefWrapLength="600.0" styleClass="content" vgap="8.0">
-                                                   <padding>
-                                                      <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />
-                                                   </padding>
-                                                </FlowPane>
-                                             </content>
-                                          </ScrollPane>
-                                          <GridPane fx:id="imageInfoPanel" hgap="8.0" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="image-info" vgap="8.0" StackPane.alignment="BOTTOM_RIGHT">
-                                            <columnConstraints>
-                                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" />
-                                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
-                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
-                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
-                                            </columnConstraints>
-                                            <rowConstraints>
-                                              <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
-                                              <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
-                                                <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
-                                                <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
-                                                <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
-                                                <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
-                                            </rowConstraints>
-                                             <children>
-                                                <Label maxWidth="1.7976931348623157E308" styleClass="title" text="Image Info" GridPane.columnSpan="2">
-                                                   <graphic>
-                                                      <Region styleClass="info-icon-svg" />
-                                                   </graphic>
-                                                   <GridPane.margin>
-                                                      <Insets bottom="4.0" />
-                                                   </GridPane.margin>
-                                                </Label>
-                                                <Label text="Name:" GridPane.rowIndex="1" />
-                                                <TextField fx:id="fileNameTextField" editable="false" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="1" />
-                                                <TextField fx:id="fileSizeTextField" editable="false" prefColumnCount="6" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                                                <TextField fx:id="filePathTextField" editable="false" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="2" />
-                                                <TextField fx:id="filePageNumberTextField" editable="false" prefColumnCount="6" GridPane.columnIndex="3" GridPane.rowIndex="4" />
-                                                <TextField fx:id="fileDimensionTextField" editable="false" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="3" />
-                                                <Button fx:id="imageFileRemoveButton" mnemonicParsing="false" text="Remove" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="5">
-                                                   <graphic>
-                                                      <Region>
-                                                         <styleClass>
-                                                            <String fx:value="icon" />
-                                                            <String fx:value="remove-icon" />
-                                                         </styleClass>
-                                                      </Region>
-                                                   </graphic>
-                                                   <tooltip>
-                                                      <Tooltip text="Remove the selected image" />
-                                                   </tooltip>
-                                                </Button>
-                                                <Label text="Dim:" GridPane.rowIndex="3" />
-                                                <Label text="Page:" GridPane.columnIndex="2" GridPane.rowIndex="4" />
-                                                <Label text="Path:" GridPane.rowIndex="2" />
-                                                <Label text="Size:" GridPane.rowIndex="4" />
-                                             </children>
-                                             <StackPane.margin>
-                                                <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />
-                                             </StackPane.margin>
-                                          </GridPane>
+                                          <ToggleButton fx:id="jobsToggleButton" mnemonicParsing="false" onAction="#onJobs" selected="true" styleClass="tab-button" text="Jobs" />
                                        </children>
-                                    </StackPane>
-                                    <HBox alignment="CENTER_LEFT" styleClass="details-box">
-                                       <children>
-                                          <Label fx:id="pageCountLabel" text="Pages: 0">
-                                             <graphic>
-                                                <Region styleClass="page-icon" />
-                                             </graphic>
-                                             <tooltip>
-                                                <Tooltip text="Total number of pages in the document" />
-                                             </tooltip>
-                                          </Label>
-                                          <Label fx:id="sizeLabel" layoutX="18.0" layoutY="18.0" text="Size: 0.00 MB">
-                                             <graphic>
-                                                <Region styleClass="disk-icon" />
-                                             </graphic>
-                                             <tooltip>
-                                                <Tooltip text="Total approximate size of image files in megabytes" />
-                                             </tooltip>
-                                          </Label>
-                                          <HBox alignment="CENTER_RIGHT" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
-                                             <children>
-                                                <Label contentDisplay="RIGHT" text="View Size">
-                                                   <graphic>
-                                                      <Slider fx:id="viewSizeSlider" blockIncrement="1.0" majorTickUnit="1.0" max="2.0" minorTickCount="0" prefWidth="75.0" snapToTicks="true" value="1.0" />
-                                                   </graphic>
-                                                </Label>
-                                             </children>
-                                          </HBox>
-                                       </children>
-                                    </HBox>
+                                    </Group>
                                  </children>
                               </VBox>
-                           </items>
-                        </SplitPane>
+                              <SplitPane fx:id="mainSplitPane" dividerPositions="0.5" HBox.hgrow="ALWAYS">
+                                 <items>
+                                    <ScrollPane fx:id="jobsPanel" fitToHeight="true" fitToWidth="true" maxWidth="250.0" minWidth="200.0" prefViewportHeight="1.0" prefWidth="250.0" styleClass="jobs-panel">
+                                       <content>
+                                          <VBox spacing="4.0" styleClass="content">
+                                             <padding>
+                                                <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                             </padding>
+                                          </VBox>
+                                       </content>
+                                    </ScrollPane>
+                                    <VBox>
+                                       <children>
+                                          <StackPane VBox.vgrow="ALWAYS">
+                                             <children>
+                                                <ScrollPane fx:id="repository" fitToHeight="true" fitToWidth="true" prefViewportHeight="1.0" styleClass="repository">
+                                                   <content>
+                                                      <FlowPane hgap="8.0" prefWrapLength="600.0" styleClass="content" vgap="8.0">
+                                                         <padding>
+                                                            <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />
+                                                         </padding>
+                                                      </FlowPane>
+                                                   </content>
+                                                </ScrollPane>
+                                                <GridPane fx:id="imageInfoPanel" hgap="8.0" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="image-info" vgap="8.0" StackPane.alignment="BOTTOM_RIGHT">
+                                                  <columnConstraints>
+                                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" />
+                                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                                                  </columnConstraints>
+                                                  <rowConstraints>
+                                                    <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                                                    <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                                                  </rowConstraints>
+                                                   <children>
+                                                      <Label maxWidth="1.7976931348623157E308" styleClass="title" text="Image Info" GridPane.columnSpan="2">
+                                                         <graphic>
+                                                            <Region styleClass="info-icon-svg" />
+                                                         </graphic>
+                                                         <GridPane.margin>
+                                                            <Insets bottom="4.0" />
+                                                         </GridPane.margin>
+                                                      </Label>
+                                                      <Label text="Name:" GridPane.rowIndex="1" />
+                                                      <TextField fx:id="fileNameTextField" editable="false" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="1" />
+                                                      <TextField fx:id="fileSizeTextField" editable="false" prefColumnCount="6" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                                      <TextField fx:id="filePathTextField" editable="false" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="2" />
+                                                      <TextField fx:id="filePageNumberTextField" editable="false" prefColumnCount="6" GridPane.columnIndex="3" GridPane.rowIndex="4" />
+                                                      <TextField fx:id="fileDimensionTextField" editable="false" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="3" />
+                                                      <Button fx:id="imageFileRemoveButton" mnemonicParsing="false" text="Remove" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="5">
+                                                         <graphic>
+                                                            <Region>
+                                                               <styleClass>
+                                                                  <String fx:value="icon" />
+                                                                  <String fx:value="remove-icon" />
+                                                               </styleClass>
+                                                            </Region>
+                                                         </graphic>
+                                                         <tooltip>
+                                                            <Tooltip text="Remove the selected image" />
+                                                         </tooltip>
+                                                      </Button>
+                                                      <Label text="Dim:" GridPane.rowIndex="3" />
+                                                      <Label text="Page:" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+                                                      <Label text="Path:" GridPane.rowIndex="2" />
+                                                      <Label text="Size:" GridPane.rowIndex="4" />
+                                                   </children>
+                                                   <StackPane.margin>
+                                                      <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />
+                                                   </StackPane.margin>
+                                                </GridPane>
+                                             </children>
+                                          </StackPane>
+                                       </children>
+                                    </VBox>
+                                 </items>
+                              </SplitPane>
+                           </children>
+                        </HBox>
                      </children>
-                  </HBox>
+                  </VBox>
                </children>
             </VBox>
          </content>

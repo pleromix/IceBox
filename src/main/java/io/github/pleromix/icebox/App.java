@@ -2,11 +2,13 @@ package io.github.pleromix.icebox;
 
 import io.github.pleromix.icebox.component.MessageBox;
 import io.github.pleromix.icebox.controller.AppController;
+import io.github.pleromix.icebox.util.Config;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import javafx.util.Pair;
 import lombok.Getter;
 import nu.pattern.OpenCV;
@@ -38,28 +40,30 @@ public class App extends Application {
 
         controller = fxmlLoader.getController();
 
-        stage.setMinWidth(1000.0D);
-        stage.setMinHeight(700.0D);
-        stage.setWidth(1000.0D);
-        stage.setHeight(700.0D);
+        stage.setMinWidth(900.0D);
+        stage.setMinHeight(500.0D);
+        stage.setWidth(900.0D);
+        stage.setHeight(500.0D);
 
         stage.setTitle("IceBox Application");
         stage.setScene(scene);
         stage.show();
-        
-        stage.setOnCloseRequest(event -> {
-            event.consume();
 
-            MessageBox.create(
-                    "Exit Application",
-                    "Do you want to exit from application?",
-                    MessageBox.MessageType.Question,
-                    List.of(
-                            new Pair<>("Yes", e -> Platform.exit()),
-                            new Pair<>("No", e -> {
-                            })
-                    )
-            );
+        stage.setOnCloseRequest(event -> {
+            if (Config.getInstance().getAskBeforeExitingApplication()) {
+                event.consume();
+
+                MessageBox.create(
+                        "Exit Application",
+                        "Are you sure you want to exit the application?",
+                        MessageBox.MessageType.Question,
+                        List.of(
+                                new Pair<>("Yes", e -> Platform.exit()),
+                                new Pair<>("No", e -> {
+                                })
+                        )
+                );
+            }
         });
     }
 }

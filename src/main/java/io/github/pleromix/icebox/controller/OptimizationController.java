@@ -12,8 +12,9 @@ import javafx.scene.control.*;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.UUID;
+import java.util.function.UnaryOperator;
 
-public class CreationController implements Initializable {
+public class OptimizationController implements Initializable {
 
     @FXML
     public CurveBinder curveBinder;
@@ -38,11 +39,21 @@ public class CreationController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         initPdfFileNameTextFieldContextMenu();
         applyButton.disableProperty().bind(pdfFileNameTextField.textProperty().isEmpty());
+
+        final UnaryOperator<TextFormatter.Change> changeUnaryOperator = change -> {
+            if (change.getText().matches("[\\sa-zA-Z0-9_-]*")) {
+                return change;
+            }
+
+            return null;
+        };
+
+        pdfFileNameTextField.setTextFormatter(new TextFormatter<>(changeUnaryOperator));
     }
 
     public void onApply(ActionEvent actionEvent) {
         App.getController().createPdf(
-                pdfFileNameTextField.getText(),
+                pdfFileNameTextField.getText().trim().replaceAll("\\s{2,}", " "),
                 curveBinder.getValue(),
                 rotate90DegCcwToggleButton.isSelected(),
                 rotate90DegCwToggleButton.isSelected(),
