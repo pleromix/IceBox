@@ -1,4 +1,4 @@
-<img alt="Logo" src="https://raw.githubusercontent.com/pleromix/IceBox/0ad966028edeaca6f6acc244f4dc5d7da13cef26/src/main/resources/io/github/pleromix/icebox/asset/logo-vector-with-title.svg" width="275"/>
+<img alt="Logo" src="https://raw.githubusercontent.com/pleromix/IceBox/14c4bfd8ebaf98ce605f4b1090e441a7442f6884/src/main/resources/io/github/pleromix/icebox/asset/logo-vector-with-title.svg" width="275"/>
 
 ![License](https://img.shields.io/github/license/pleromix/icebox)
 ![Flatpak](https://img.shields.io/badge/flatpak-available-blue)
@@ -38,7 +38,7 @@ flatpak run io.github.pleromix.IceBox
 
 ## 📸 Screenshot
 
-![App Screenshot](https://raw.githubusercontent.com/pleromix/IceBox/cc98bae4a79d7db84a8803ce4a1bf6927a778339/screenshots/image_1.png)
+![App Screenshot](https://raw.githubusercontent.com/pleromix/IceBox/14c4bfd8ebaf98ce605f4b1090e441a7442f6884/screenshots/image_1.png)
 
 ## 📄 License
 

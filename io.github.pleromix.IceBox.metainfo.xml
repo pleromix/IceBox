@@ -76,15 +76,33 @@
     <screenshots>
         <screenshot type="default">
             <image>
-                https://raw.githubusercontent.com/pleromix/IceBox/cc98bae4a79d7db84a8803ce4a1bf6927a778339/screenshots/image_1.png
+                https://raw.githubusercontent.com/pleromix/IceBox/14c4bfd8ebaf98ce605f4b1090e441a7442f6884/screenshots/image_1.png
             </image>
-            <caption>Image files are imported</caption>
+            <caption>Images are imported</caption>
         </screenshot>
         <screenshot>
             <image>
-                https://raw.githubusercontent.com/pleromix/IceBox/cc98bae4a79d7db84a8803ce4a1bf6927a778339/screenshots/image_2.png
+                https://raw.githubusercontent.com/pleromix/IceBox/14c4bfd8ebaf98ce605f4b1090e441a7442f6884/screenshots/image_2.png
             </image>
-            <caption>Main interface</caption>
+            <caption>Optimizing PDF file</caption>
+        </screenshot>
+        <screenshot>
+            <image>
+                https://raw.githubusercontent.com/pleromix/IceBox/14c4bfd8ebaf98ce605f4b1090e441a7442f6884/screenshots/image_3.png
+            </image>
+            <caption>PDF file is ready</caption>
+        </screenshot>
+        <screenshot>
+            <image>
+                https://raw.githubusercontent.com/pleromix/IceBox/14c4bfd8ebaf98ce605f4b1090e441a7442f6884/screenshots/image_4.png
+            </image>
+            <caption>Metadata panel</caption>
+        </screenshot>
+        <screenshot>
+            <image>
+                https://raw.githubusercontent.com/pleromix/IceBox/14c4bfd8ebaf98ce605f4b1090e441a7442f6884/screenshots/image_5.png
+            </image>
+            <caption>Settings panel</caption>
         </screenshot>
     </screenshots>
 </component>
