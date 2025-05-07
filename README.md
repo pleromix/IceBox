@@ -4,15 +4,19 @@
 ![Flatpak](https://img.shields.io/badge/flatpak-available-blue)
 ![Java](https://img.shields.io/badge/java-21-orange)
 
-**IceBox** is a simple and intuitive desktop application that allows you to convert multiple images into a single,
-high-quality PDF document. Built with Java, it runs on Linux via Flatpak.
+**IceBox** is a lightweight and intuitive desktop application for converting multiple images into a single, high-quality
+PDF document. Built with Java, it runs seamlessly on Linux via Flatpak.
 
 ## ✨ Features
 
-- 🖼️ Import multiple image formats (JPEG, PNG, etc.)
-- 📄 Export images into a single PDF file
-- 🎨 Simple and clean UI
-- 💡 Lightweight and easy to use
+- 🖼️ Import various image formats, including JPEG, PNG, and JPEG 2000
+- 📄 Convert images into a single PDF file
+- 🧩 Built-in support for image compression and transformation
+- 🌑 Option to generate grayscale PDF files
+- 📝 Add metadata to your PDF output
+- 🔧 Customize page margins, image size, and compression settings
+- 🎛️ Clean, responsive, and user-friendly interface
+- 🚀 Fast, lightweight, and easy to use
 
 ## 📦 Installation
 

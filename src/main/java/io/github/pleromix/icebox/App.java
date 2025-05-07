@@ -8,15 +8,19 @@ import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 import javafx.util.Pair;
 import lombok.Getter;
 import nu.pattern.OpenCV;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.List;
 
+
 public class App extends Application {
+
+    private static final Logger logger = LoggerFactory.getLogger(App.class);
 
     @Getter
     private static App application;
@@ -31,39 +35,43 @@ public class App extends Application {
     }
 
     @Override
-    public void start(Stage stage) throws IOException {
-        App.application = this;
-        App.primaryStage = stage;
+    public void start(Stage stage) {
+        try {
+            App.application = this;
+            App.primaryStage = stage;
 
-        var fxmlLoader = new FXMLLoader(App.class.getResource("app.fxml"));
-        var scene = new Scene(fxmlLoader.load());
+            var fxmlLoader = new FXMLLoader(App.class.getResource("app.fxml"));
+            var scene = new Scene(fxmlLoader.load());
 
-        controller = fxmlLoader.getController();
+            controller = fxmlLoader.getController();
 
-        stage.setMinWidth(900.0D);
-        stage.setMinHeight(500.0D);
-        stage.setWidth(900.0D);
-        stage.setHeight(500.0D);
+            stage.setMinWidth(900.0D);
+            stage.setMinHeight(500.0D);
+            stage.setWidth(900.0D);
+            stage.setHeight(500.0D);
 
-        stage.setTitle("IceBox Application");
-        stage.setScene(scene);
-        stage.show();
+            stage.setTitle("IceBox Application");
+            stage.setScene(scene);
+            stage.show();
 
-        stage.setOnCloseRequest(event -> {
-            if (Config.getInstance().getAskBeforeExitingApplication()) {
-                event.consume();
+            stage.setOnCloseRequest(event -> {
+                if (Config.getInstance().getAskBeforeExitingApplication()) {
+                    event.consume();
 
-                MessageBox.create(
-                        "Exit Application",
-                        "Are you sure you want to exit the application?",
-                        MessageBox.MessageType.Question,
-                        List.of(
-                                new Pair<>("Yes", e -> Platform.exit()),
-                                new Pair<>("No", e -> {
-                                })
-                        )
-                );
-            }
-        });
+                    MessageBox.create(
+                            "Exit Application",
+                            "Are you sure you want to exit the application?",
+                            MessageBox.MessageType.Question,
+                            List.of(
+                                    new Pair<>("Yes", e -> Platform.exit()),
+                                    new Pair<>("No", e -> {
+                                    })
+                            )
+                    );
+                }
+            });
+        } catch (IOException e) {
+            logger.error("app.fxml file failed to load correctly: {}", e.getMessage(), e);
+        }
     }
 }

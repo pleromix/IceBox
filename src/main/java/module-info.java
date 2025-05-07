@@ -11,6 +11,7 @@ module io.github.pleromix.icebox {
     requires static lombok;
     requires java.sql;
     requires java.management;
+    requires org.slf4j;
 
     opens io.github.pleromix.icebox to javafx.fxml;
     opens io.github.pleromix.icebox.controller to javafx.fxml;

@@ -2,9 +2,9 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   width="1303.937"
+   width="1292.5984"
    height="264.56693"
-   viewBox="0 0 344.99999 69.999999"
+   viewBox="0 0 341.99998 69.999999"
    version="1.1"
    id="svg1"
    sodipodi:docname="logo-vector-with-title.svg"
@@ -28,20 +28,25 @@
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="mm"
      showguides="true"
-     inkscape:zoom="0.77781746"
-     inkscape:cx="620.96832"
-     inkscape:cy="250.70149"
+     inkscape:zoom="1.1"
+     inkscape:cx="647.27273"
+     inkscape:cy="193.63636"
      inkscape:window-width="1920"
      inkscape:window-height="1011"
-     inkscape:window-x="0"
+     inkscape:window-x="1920"
      inkscape:window-y="32"
      inkscape:window-maximized="1"
      inkscape:current-layer="layer1"
      showgrid="false">
     <sodipodi:guide
-       position="5.4079276,35.825584"
+       position="37.263004,34.999998"
+       orientation="1,0"
+       id="guide2192"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="37.263004,34.999999"
        orientation="0,-1"
-       id="guide4054"
+       id="guide2239"
        inkscape:locked="false" />
   </sodipodi:namedview>
   <defs
@@ -75,9 +80,9 @@
      id="layer1"
      transform="translate(-84.479843,-67.043526)">
     <rect
-       style="fill:#ffffff;stroke:none;stroke-width:2;stroke-dasharray:none;stroke-opacity:1"
+       style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:2;stroke-dasharray:none;stroke-opacity:1"
        id="rect3337"
-       width="345"
+       width="342"
        height="70"
        x="84.479843"
        y="67.043526"
@@ -86,16 +91,16 @@
     <text
        xml:space="preserve"
        style="font-size:28.2222px;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans';fill:#3771c8;stroke-width:2"
-       x="158.74889"
-       y="110.4091"
+       x="156.69821"
+       y="109.82944"
        id="text3950"><tspan
          sodipodi:role="line"
          id="tspan3948"
          style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:semi-condensed;font-size:28.2222px;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans Bold Semi-Condensed';stroke-width:2"
-         x="158.74889"
-         y="110.4091">IceBox Application</tspan></text>
+         x="156.69821"
+         y="109.82944">IceBox Application</tspan></text>
     <g
-       id="g2203"
+       id="g1730"
        transform="translate(81.379981,59.900048)">
       <path
          sodipodi:type="star"
@@ -116,7 +121,7 @@
       <path
          sodipodi:type="star"
          style="opacity:1;fill:#3d88d4;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1.2;stroke-linecap:round;stroke-linejoin:round"
-         id="path5299-3"
+         id="path5299"
          inkscape:flatsided="true"
          sodipodi:sides="4"
          sodipodi:cx="30.519939"
@@ -132,7 +137,7 @@
       <path
          sodipodi:type="star"
          style="opacity:1;fill:#4198dc;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1.2;stroke-linecap:round;stroke-linejoin:round"
-         id="path4607-6"
+         id="path4607"
          inkscape:flatsided="true"
          sodipodi:sides="4"
          sodipodi:cx="30.519939"
@@ -148,7 +153,7 @@
       <path
          sodipodi:type="star"
          style="opacity:1;fill:#49b2e9;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1.2;stroke-linecap:round;stroke-linejoin:round"
-         id="path2-7"
+         id="path2"
          inkscape:flatsided="true"
          sodipodi:sides="4"
          sodipodi:cx="30.519939"

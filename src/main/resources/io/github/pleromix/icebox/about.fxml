@@ -20,7 +20,7 @@
                <children>
                   <ImageView fitHeight="64.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@asset/logo-64px.png" />
+                        <Image url="@asset/logo-128px.png" />
                      </image>
                   </ImageView>
                   <Label fx:id="logoTitleLabel" styleClass="logo-title" text="IceBox Application" />
