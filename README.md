@@ -1,4 +1,4 @@
-<img alt="Logo" src="https://raw.githubusercontent.com/pleromix/IceBox/56656cfc196855c5dd687c67f46300efd49a3066/src/main/resources/io/github/pleromix/icebox/asset/logo-vector-with-title.svg" width="275"/>
+<img alt="Logo" src="https://raw.githubusercontent.com/pleromix/IceBox/c6f7a519edcd4b14599671eae7a1e683fe2917ff/src/main/resources/io/github/pleromix/icebox/asset/logo-vector-with-title.svg" width="275"/>
 
 ![License](https://img.shields.io/github/license/pleromix/icebox)
 ![Flatpak](https://img.shields.io/badge/flatpak-available-blue)
@@ -39,8 +39,8 @@ flatpak run io.github.pleromix.IceBox
 ## 📸 Screenshots
 
 <div align="center" style="display: flex; width: 100%; justify-content: center; align-items: center;">
-  <img src="https://raw.githubusercontent.com/pleromix/IceBox/14c4bfd8ebaf98ce605f4b1090e441a7442f6884/screenshots/image_3.png" height="400" alt="PDF file is ready"/>
-  <img src="https://raw.githubusercontent.com/pleromix/IceBox/14c4bfd8ebaf98ce605f4b1090e441a7442f6884/screenshots/image_2.png" height="415" alt="Optimizing PDF file"/>
+  <img src="https://raw.githubusercontent.com/pleromix/IceBox/14c4bfd8ebaf98ce605f4b1090e441a7442f6884/screenshots/image_3.png" height="200" alt="PDF file is ready"/>
+  <img src="https://raw.githubusercontent.com/pleromix/IceBox/14c4bfd8ebaf98ce605f4b1090e441a7442f6884/screenshots/image_2.png" height="210" alt="Optimizing PDF file"/>
 </div>
 
 ## 📄 License
