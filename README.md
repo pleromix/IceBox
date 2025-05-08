@@ -1,4 +1,4 @@
-<img alt="Logo" src="https://raw.githubusercontent.com/pleromix/IceBox/14c4bfd8ebaf98ce605f4b1090e441a7442f6884/src/main/resources/io/github/pleromix/icebox/asset/logo-vector-with-title.svg" width="275"/>
+<img alt="Logo" src="https://raw.githubusercontent.com/pleromix/IceBox/56656cfc196855c5dd687c67f46300efd49a3066/src/main/resources/io/github/pleromix/icebox/asset/logo-vector-with-title.svg" width="275"/>
 
 ![License](https://img.shields.io/github/license/pleromix/icebox)
 ![Flatpak](https://img.shields.io/badge/flatpak-available-blue)
@@ -36,9 +36,12 @@ flatpak install flathub io.github.pleromix.IceBox
 flatpak run io.github.pleromix.IceBox
 ```
 
-## 📸 Screenshot
+## 📸 Screenshots
 
-![App Screenshot](https://raw.githubusercontent.com/pleromix/IceBox/14c4bfd8ebaf98ce605f4b1090e441a7442f6884/screenshots/image_1.png)
+<div align="center" style="display: flex; width: 100%; justify-content: center; align-items: center;">
+  <img src="https://raw.githubusercontent.com/pleromix/IceBox/14c4bfd8ebaf98ce605f4b1090e441a7442f6884/screenshots/image_3.png" height="400" alt="PDF file is ready"/>
+  <img src="https://raw.githubusercontent.com/pleromix/IceBox/14c4bfd8ebaf98ce605f4b1090e441a7442f6884/screenshots/image_2.png" height="415" alt="Optimizing PDF file"/>
+</div>
 
 ## 📄 License
 
