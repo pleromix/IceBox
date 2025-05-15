@@ -21,6 +21,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
+
 <StackPane fx:id="root" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="900.0" stylesheets="@css/app.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.github.pleromix.icebox.controller.AppController">
    <children>
       <ScrollPane fitToHeight="true" fitToWidth="true">
@@ -250,24 +251,5 @@
             </VBox>
          </content>
       </ScrollPane>
-      <StackPane style="-fx-background-color: #000c;" visible="false" StackPane.alignment="CENTER">
-         <children>
-            <VBox maxHeight="-Infinity" maxWidth="-Infinity" minWidth="300.0" prefWidth="400.0" styleClass="message-box">
-               <children>
-                  <Label styleClass="title" text="Message Box Title" />
-                  <Label layoutX="26.0" layoutY="26.0" text="This is a test for showing that in this place we can put some text." wrapText="true" />
-                  <HBox alignment="CENTER_RIGHT" spacing="4.0" styleClass="control-box">
-                     <children>
-                        <Button mnemonicParsing="false" text="Cancle" />
-                        <Button mnemonicParsing="false" text="Okay" />
-                     </children>
-                  </HBox>
-               </children>
-               <padding>
-                  <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />
-               </padding>
-            </VBox>
-         </children>
-      </StackPane>
    </children>
 </StackPane>
