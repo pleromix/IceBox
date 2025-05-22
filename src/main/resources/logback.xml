@@ -7,7 +7,7 @@
     </appender>
 
     <appender name="file" class="ch.qos.logback.core.FileAppender">
-        <file>${user.home}/io.github.pleromix.icebox.log</file>
+        <file>${java.io.tmpdir}/io.github.pleromix.icebox.log</file>
         <append>true</append>
         <immediateFlush>true</immediateFlush>
         <encoder>

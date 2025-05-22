@@ -4,12 +4,17 @@ import io.github.pleromix.icebox.App;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Cursor;
 import javafx.scene.Scene;
+import javafx.scene.SnapshotParameters;
+import javafx.scene.image.WritableImage;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Modality;
@@ -17,19 +22,24 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import lombok.Getter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import javax.imageio.ImageIO;
+import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
 
 public class Panel {
+
+    private static final Logger logger = LoggerFactory.getLogger(Panel.class);
+    private static final StackPane overlay = new StackPane();
 
     public static final String ABOUT = "about";
     public static final String METADATA = "metadata";
     public static final String CREATION = "optimization";
     public static final String WELCOME = "welcome";
     public static final String SETTINGS = "settings";
-
-    private static final StackPane overlay = new StackPane();
 
     @Getter
     private static Stage currentStage;
@@ -90,7 +100,7 @@ public class Panel {
             timeline.setCycleCount(3);
             timeline.play();
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error("Could not open FXML file: {}", e.getMessage(), e);
         }
     }
 

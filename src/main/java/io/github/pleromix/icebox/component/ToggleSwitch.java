@@ -25,8 +25,8 @@ public class ToggleSwitch extends Pane {
 
     private final ObjectProperty<EventHandler<MouseEvent>> onToggleProperty = new SimpleObjectProperty<>();
     private final BooleanProperty selected = new SimpleBooleanProperty(false);
-    private final Label onLabel = new Label("On");
-    private final Label offLabel = new Label("Off");
+    private final Label onLabel = new Label("");
+    private final Label offLabel = new Label("");
     private final Circle thumb = new Circle(6.0D);
 
     public ToggleSwitch() {
@@ -41,8 +41,8 @@ public class ToggleSwitch extends Pane {
         onLabel.getStyleClass().add("toggle-switch-on");
         offLabel.getStyleClass().add("toggle-switch-off");
 
-        onLabel.setPrefSize(40.0D, 16.0D);
-        offLabel.setPrefSize(40.0D, 16.0D);
+        onLabel.setPrefSize(24.0D, 16.0D);
+        offLabel.setPrefSize(24.0D, 16.0D);
 
         thumb.setStroke(Color.TRANSPARENT);
         thumb.setFill(Color.valueOf("#fff"));
@@ -55,7 +55,7 @@ public class ToggleSwitch extends Pane {
         setCursor(Cursor.HAND);
 
         if (isSelected()) {
-            thumb.setCenterX(32.0D);
+            thumb.setCenterX(16.0D);
             onLabel.setOpacity(1.0D);
             offLabel.setOpacity(0.0D);
         } else {
@@ -88,7 +88,7 @@ public class ToggleSwitch extends Pane {
                                 Duration.millis(100.0D),
                                 new KeyValue(
                                         thumb.centerXProperty(),
-                                        32.0D
+                                        16.0D
                                 ),
                                 new KeyValue(
                                         onLabel.opacityProperty(),
@@ -106,7 +106,7 @@ public class ToggleSwitch extends Pane {
                                 Duration.ZERO,
                                 new KeyValue(
                                         thumb.centerXProperty(),
-                                        32.0D
+                                        16.0D
                                 ),
                                 new KeyValue(
                                         onLabel.opacityProperty(),

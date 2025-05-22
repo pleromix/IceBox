@@ -17,9 +17,9 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" stylesheets="@css/app.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.github.pleromix.icebox.controller.OptimizationController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" stylesheets="@css/app.css" xmlns="http://javafx.com/javafx/20" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.github.pleromix.icebox.controller.OptimizationController">
    <children>
-      <VBox styleClass="about" AnchorPane.bottomAnchor="24.0" AnchorPane.leftAnchor="24.0" AnchorPane.rightAnchor="24.0" AnchorPane.topAnchor="24.0">
+      <VBox styleClass="panel" AnchorPane.bottomAnchor="24.0" AnchorPane.leftAnchor="24.0" AnchorPane.rightAnchor="24.0" AnchorPane.topAnchor="24.0">
          <children>
             <Label styleClass="panel-title" text="Create PDF File">
                <graphic>
@@ -31,7 +31,7 @@
                   </Region>
                </graphic>
             </Label>
-            <Label maxWidth="1.7976931348623157E308" styleClass="note" text="Only the final PDF will be affected by these settings." wrapText="true" VBox.vgrow="ALWAYS" />
+            <Label maxWidth="1.7976931348623157E308" styleClass="note" text="These settings apply exclusively to the PDF." wrapText="true" VBox.vgrow="ALWAYS" />
             <Label text="Compression:" />
             <VBox alignment="CENTER" fillWidth="false" maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS">
                <children>

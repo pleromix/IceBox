@@ -37,6 +37,8 @@ import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
@@ -47,6 +49,9 @@ import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class AppController implements Initializable {
+
+
+    private static final Logger logger = LoggerFactory.getLogger(AppController.class);
 
     public static final float ONE_HALF_INCH_MARGIN = 0.5F * 2 * 72;
     public static final float ONE_INCH_MARGIN = 1.0F * 2 * 72;
@@ -277,7 +282,7 @@ public class AppController implements Initializable {
 
                     document.save(file);
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    logger.error("Could not create document: {}", e.getMessage(), e);
                 }
 
                 return null;
@@ -344,6 +349,7 @@ public class AppController implements Initializable {
     public void onImportFiles(ActionEvent actionEvent) {
         final var fileChooser = new FileChooser();
         final var repositoryContent = (FlowPane) repository.getContent();
+        final var ownerWindows = Objects.isNull(Panel.getCurrentStage()) ? App.getPrimaryStage() : Panel.getCurrentStage();
 
         fileChooser.setTitle("Import Image Files");
         fileChooser.getExtensionFilters().addAll(
@@ -354,7 +360,7 @@ public class AppController implements Initializable {
                 new FileChooser.ExtensionFilter("WebP (*.webp)", "*.webp")
         );
 
-        final var files = fileChooser.showOpenMultipleDialog(root.getScene().getWindow());
+        final var files = fileChooser.showOpenMultipleDialog(ownerWindows);
 
         if (Objects.nonNull(files) && !files.isEmpty()) {
             Job.create("Importing image files", "Image files are imported", "We couldn't import image files", new Task<Void>() {
@@ -374,7 +380,7 @@ public class AppController implements Initializable {
                             thumbnails.add(Thumbnail.create(files.get(index), Utility.resize(files.get(index), Thumbnail.IMAGE_SIZE * 3), numberOfCurrentThumbnails + index + 1));
                             updateProgress(numberOfCurrentThumbnails + index + 1, files.size());
                         } catch (IOException e) {
-                            throw new RuntimeException(e);
+                            logger.error("Could not create thumbnail: {}", e.getMessage(), e);
                         }
                     }
 
@@ -469,7 +475,7 @@ public class AppController implements Initializable {
                     }
 
                 } catch (IllegalAccessException e) {
-                    throw new RuntimeException(e);
+                    logger.error("Could not access class field: {}", e.getMessage(), e);
                 }
             }
         }

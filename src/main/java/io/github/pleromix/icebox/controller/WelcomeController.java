@@ -21,8 +21,8 @@ public class WelcomeController implements Initializable {
         showWelcomePanelToggleSwitch.selectedProperty().bindBidirectional(Config.getInstance().showWelcomePanelProperty);
     }
 
-    public void onAddImages(ActionEvent event) {
-        App.getController().onImportFiles(event);
+    public void onAddImages(ActionEvent actionEvent) {
+        App.getController().onImportFiles(actionEvent);
     }
 
     public void onClose(ActionEvent actionEvent) {

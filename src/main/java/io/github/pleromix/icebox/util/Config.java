@@ -3,6 +3,8 @@ package io.github.pleromix.icebox.util;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import org.apache.commons.io.FileUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -14,6 +16,7 @@ import java.util.Properties;
 
 public final class Config {
 
+    private static final Logger logger = LoggerFactory.getLogger(Config.class);
     private static final String APP_ID = "io.github.pleromix.icebox";
     private static final Path CONFIG_PATH = Paths.get(FileUtils.getTempDirectory().getPath(), APP_ID + ".properties");
 
@@ -60,7 +63,7 @@ public final class Config {
             showImageInfoProperty.set(getShowImageInfo());
             askBeforeExitingApplicationProperty.set(getAskBeforeExitingApplication());
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Failed to load config: {}", e.getMessage(), e);
         }
     }
 
@@ -68,7 +71,7 @@ public final class Config {
         try (final var outputStream = new FileOutputStream(CONFIG_PATH.toFile())) {
             appProperties.store(outputStream, "User configurations");
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            logger.error("Failed to save config: {}", e.getMessage(), e);
         }
     }
 

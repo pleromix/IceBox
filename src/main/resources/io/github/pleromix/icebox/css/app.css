@@ -35,8 +35,8 @@
 .text-field {
     -fx-background-color: #f2f2f2, #f2f2f2;
     -fx-background-insets: 0, 1;
-    -fx-background-radius: 5, 4;
-    -fx-padding: 0.35em 0.6em;
+    -fx-background-radius: 2, 1;
+    -fx-padding: 0.25em 0.4em;
 }
 
 .text-field:focused {
@@ -45,10 +45,10 @@
 }
 
 .text-area {
-    -fx-padding: 0.3em 0.3em 0.3em 0.6em;
+    -fx-padding: 0.3em 0.4em 0.3em 0.4em;
     -fx-background-color: #f2f2f2, #f2f2f2;
     -fx-background-insets: 0, 1;
-    -fx-background-radius: 3, 2;
+    -fx-background-radius: 2, 1;
 }
 
 .text-area:focused {
@@ -75,15 +75,15 @@
 .button, .toggle-button {
     -fx-background-color: #ddd, linear-gradient(to bottom, #fff 90%, #fafafa 90%);
     -fx-background-insets: 0, 1;
-    -fx-background-radius: 5, 4;
-    -fx-padding: 0.35em 0.6em;
+    -fx-background-radius: 2, 1;
+    -fx-padding: 0.25em 0.4em;
     -fx-cursor: hand;
 }
 
 .button:default, .toggle-button:default {
     -fx-background-color: -fx-focus-color, linear-gradient(to bottom, #fff 90%, #fafafa 90%);
     -fx-background-insets: 0, 2;
-    -fx-background-radius: 5, 3;
+    -fx-background-radius: 2, 1;
 }
 
 .button:hover, .toggle-button:hover {
@@ -93,7 +93,7 @@
 .button:default:hover, .toggle-button:default:hover {
     -fx-background-color: #ccc, linear-gradient(to bottom, #fff 90%, #eee 90%);
     -fx-background-insets: 0, 1;
-    -fx-background-radius: 5, 3;
+    -fx-background-radius: 2, 1;
 }
 
 .button:pressed, .toggle-button:pressed {
@@ -115,11 +115,11 @@
 }
 
 .button .icon {
-    -fx-background-size: 18;
+    -fx-background-size: 16;
     -fx-background-position: center;
     -fx-background-repeat: no-repeat;
-    -fx-pref-width: 18;
-    -fx-pref-height: 18;
+    -fx-pref-width: 16;
+    -fx-pref-height: 16;
 }
 
 .button .large-icon {
@@ -131,11 +131,11 @@
 }
 
 .toggle-button .icon {
-    -fx-background-size: 18;
+    -fx-background-size: 16;
     -fx-background-position: center;
     -fx-background-repeat: no-repeat;
-    -fx-pref-width: 18;
-    -fx-pref-height: 18;
+    -fx-pref-width: 16;
+    -fx-pref-height: 16;
 }
 
 .check-box {
@@ -245,7 +245,7 @@
 .choice-box {
     -fx-background-color: #ddd, linear-gradient(to bottom, #fff 90%, #fafafa 90%);
     -fx-background-insets: 0, 1;
-    -fx-background-radius: 5, 4;
+    -fx-background-radius: 2, 1;
     -fx-padding: 0;
     -fx-cursor: hand;
 }
@@ -263,6 +263,14 @@
     -fx-background-color: -fx-focus-color, linear-gradient(to bottom, #fff 90%, #eee 90%);
 }
 
+.choice-box > .label {
+    -fx-padding: 0.25em 0.4em;
+}
+
+.choice-box .open-button {
+    -fx-padding: 0 8;
+}
+
 .choice-box .open-button .arrow {
     -fx-pref-width: 10;
     -fx-pref-height: 6;
@@ -270,11 +278,11 @@
 }
 
 .tooltip {
-    -fx-padding: 0.4em 0.8em;
+    -fx-padding: 0.25em 0.4em;
     -fx-font-size: 1em;
     -fx-background-color: #fff;
     -fx-background-insets: 0;
-    -fx-background-radius: 3;
+    -fx-background-radius: 2;
     -fx-text-fill: #222;
     -fx-effect: dropshadow(gaussian, #0002, 4, 0.25, 0, 1);
 }
@@ -291,10 +299,10 @@
 
 .context-menu {
     -fx-background-color: #fff;
-    -fx-background-radius: 5;
+    -fx-background-radius: 2;
     -fx-padding: 0.6em 0 0.6em 0;
     -fx-text-fill: #444;
-    -fx-effect: dropshadow(gaussian, #0002, 16, 0, 0, 4);
+    -fx-effect: dropshadow(gaussian, #0003, 4, 0, 0, 1);
 }
 
 .context-menu .menu-item {
@@ -357,13 +365,13 @@
 .progress-bar .track {
     -fx-background-color: #eee;
     -fx-background-insets: 0;
-    -fx-background-radius: 3;
+    -fx-background-radius: 2;
 }
 
 .progress-bar .bar {
     -fx-background-color: #00B569;
     -fx-background-insets: 0;
-    -fx-background-radius: 3;
+    -fx-background-radius: 2;
 }
 
 .scroll-pane {
@@ -457,7 +465,7 @@
 
 .notification {
     -fx-background-color: #fff;
-    -fx-background-radius: 5;
+    -fx-background-radius: 2;
     -fx-padding: 8;
     -fx-max-width: 300;
     -fx-effect: dropshadow(gaussian, #0001, 16, 0, 0, 2);
@@ -494,7 +502,7 @@
 
 .message-box {
     -fx-background-color: #fff;
-    -fx-background-radius: 5;
+    -fx-background-radius: 2;
     -fx-effect: dropshadow(gaussian, #0002, 24, 0, 0, 2);
     -fx-min-width: 300;
     -fx-pref-width: 350;
@@ -606,7 +614,7 @@
 
 .job {
     -fx-background-color: #fff;
-    -fx-background-radius: 5;
+    -fx-background-radius: 2;
     -fx-padding: 8 10 8 10;
 }
 
@@ -653,9 +661,10 @@
 }
 
 .tab-button {
+    -fx-background-color: #ddd, linear-gradient(to bottom, #fff, #fafafa) !important;
     -fx-background-radius: 0;
     -fx-padding: 0.2em 1.2em;
-    -fx-rotate: 90deg;
+    -fx-rotate: -90deg;
 }
 
 .tab-button:selected {
@@ -689,9 +698,9 @@
 
 .thumbnail {
     -fx-background-color: #fff;
-    -fx-background-radius: 2;
+    -fx-background-radius: 1;
     -fx-border-color: #fff;
-    -fx-border-radius: 5;
+    -fx-border-radius: 2;
     -fx-border-width: 1;
     -fx-effect: dropshadow(gaussian, #0002, 2, 0, 0, 1);
 }
@@ -730,29 +739,29 @@
     -fx-text-fill: #777;
     -fx-background-color: #f4f4f4;
     -fx-background-insets: 0, 1;
-    -fx-background-radius: 5;
-    -fx-padding: 0.35em 0.6em;
+    -fx-background-radius: 2;
+    -fx-padding: 0.25em 0.4em;
     -fx-graphic-text-gap: 4;
 }
 
 .details-box .page-icon {
     -fx-background-color: #777;
-    -fx-pref-width: 11;
-    -fx-pref-height: 15;
+    -fx-pref-width: 10;
+    -fx-pref-height: 13;
     -fx-shape: "M 0,0 V 16 H 12 V 5.167286 H 6.9120197 V 0 Z m 8,0 v 4.064436 h 4 z";
 }
 
 .details-box .disk-icon {
     -fx-background-color: #777;
-    -fx-pref-width: 15;
-    -fx-pref-height: 15;
+    -fx-pref-width: 13;
+    -fx-pref-height: 13;
     -fx-shape: "M 2.1166667 0 A 2.1166666 2.1166666 0 0 0 0 2.1166667 A 2.1166666 2.1166666 0 0 0 2.1166667 4.2333333 A 2.1166666 2.1166666 0 0 0 4.2333333 2.1166667 A 2.1166666 2.1166666 0 0 0 2.1166667 0 z M 2.1166667 1.3668416 A 0.75 0.75 0 0 1 2.8664917 2.1166667 A 0.75 0.75 0 0 1 2.1166667 2.8664917 A 0.75 0.75 0 0 1 1.3668416 2.1166667 A 0.75 0.75 0 0 1 2.1166667 1.3668416 z";
 }
 
 .image-info {
     -fx-background-color: #fff;
-    -fx-background-radius: 5;
-    -fx-effect: dropshadow(gaussian, #0001, 16, 0, 0, 2);
+    -fx-background-radius: 2;
+    -fx-effect: dropshadow(gaussian, #0002, 4, 0, 0, 1);
     -fx-padding: 16;
 }
 
@@ -766,8 +775,8 @@
 }
 
 .image-info .text-field {
-    -fx-padding: 2 4;
-    -fx-background-radius: 3 2;
+    -fx-padding: 0.15em 0.4em;
+    -fx-background-radius: 2 1;
     -fx-font-size: 0.9em;
     -fx-text-fill: #666;
 }
@@ -787,9 +796,9 @@
     -fx-pref-height: 12;
 }
 
-.about {
+.panel {
     -fx-background-color: #fff;
-    -fx-background-radius: 5;
+    -fx-background-radius: 2;
     -fx-effect: dropshadow(gaussian, #0002, 24, 0, 0, 2);
     -fx-padding: 24;
     -fx-spacing: 16;
@@ -845,15 +854,15 @@
 }
 
 .menu-button {
-    -fx-pref-width: 30;
-    -fx-pref-height: 30;
-    -fx-background-radius: 15, 14;
+    -fx-pref-width: 26;
+    -fx-pref-height: 26;
+    -fx-background-radius: 13;
 }
 
 .menu-button .icon {
-    -fx-background-image: url('../icon/menu-32px.png');
+    -fx-background-image: url('../icon/menu-14px.png');
     -fx-background-repeat: no-repeat;
-    -fx-background-size: 16;
+    -fx-background-size: 14;
 }
 
 .slider .track {
@@ -880,7 +889,7 @@
 
 .note {
     -fx-background-color: #f8f8f8;
-    -fx-background-radius: 5;
+    -fx-background-radius: 2;
     -fx-padding: 0.4em 0.6em 0.4em 2.0em;
     -fx-background-size: 20;
     -fx-background-repeat: no-repeat;
@@ -905,8 +914,4 @@
 }
 
 .main-menu {
-}
-
-.main-menu .menu-item {
-    -fx-padding: 0.35em 1.6em;
 }

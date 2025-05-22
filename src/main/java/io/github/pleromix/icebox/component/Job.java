@@ -108,6 +108,7 @@ public class Job extends AnchorPane {
         final var cancelTooltip = new Tooltip("Cancel job");
         final var linkTooltip = new Tooltip("Open file");
 
+        setMinHeight(AnchorPane.USE_PREF_SIZE);
         setPrefHeight(42.0D);
 
         statusIcon.setMinWidth(Region.USE_PREF_SIZE);

@@ -12,6 +12,7 @@ module io.github.pleromix.icebox {
     requires java.sql;
     requires java.management;
     requires org.slf4j;
+    requires javafx.swing;
 
     opens io.github.pleromix.icebox to javafx.fxml;
     opens io.github.pleromix.icebox.controller to javafx.fxml;

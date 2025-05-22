@@ -14,9 +14,7 @@ import nu.pattern.OpenCV;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
 import java.util.List;
-
 
 public class App extends Application {
 
@@ -70,8 +68,8 @@ public class App extends Application {
                     );
                 }
             });
-        } catch (IOException e) {
-            logger.error("app.fxml file failed to load correctly: {}", e.getMessage(), e);
+        } catch (Exception e) {
+            logger.error("Could not open FXML file: {}", e.getMessage(), e);
         }
     }
 }

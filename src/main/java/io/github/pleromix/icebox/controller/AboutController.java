@@ -2,6 +2,7 @@ package io.github.pleromix.icebox.controller;
 
 import io.github.pleromix.icebox.App;
 import io.github.pleromix.icebox.component.Panel;
+import io.github.pleromix.icebox.util.Config;
 import io.github.pleromix.icebox.util.Utility;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -9,6 +10,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import lombok.SneakyThrows;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -18,6 +21,8 @@ import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class AboutController implements Initializable {
+
+    private static final Logger logger = LoggerFactory.getLogger(AboutController.class);
 
     @FXML
     public Label logoTitleLabel;
@@ -42,7 +47,7 @@ public class AboutController implements Initializable {
 
             acknowledgementTextArea.setText(content);
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error("Failed to load about file: {}", e.getMessage(), e);
         }
     }
 
