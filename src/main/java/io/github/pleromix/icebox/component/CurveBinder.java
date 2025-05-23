@@ -34,7 +34,7 @@ public class CurveBinder extends Group {
     public static final double CIRCLE_RADIUS = 5.0D;
     public static final Paint STROKE_COLOR = Paint.valueOf("#999");
     public static final Color CIRCLE_FILL_COLOR = Color.WHITE;
-    public static final Paint STROKE_COLOR_SELECTED = Paint.valueOf("#27fa");
+    public static final Paint STROKE_COLOR_SELECTED = Paint.valueOf("#59f");
     public static final double TOGGLE_BUTTON_WIDTH = 100.0D;
     public static final Duration CURVE_ANIMATION_DURATION = Duration.millis(100.0D);
     public static final double LINE_STROKE_WIDTH = 2.0D;

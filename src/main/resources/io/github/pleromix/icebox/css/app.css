@@ -674,7 +674,7 @@
 .jobs-panel {
     -fx-background-color: #f6f6f6;
     -fx-border-color: #0001;
-    -fx-border-width: 2 0 2 0;
+    -fx-border-width: 1 0 1 0;
 }
 
 .jobs-panel .content {
@@ -684,7 +684,7 @@
 .repository {
     -fx-background-color: #f6f6f6;
     -fx-border-color: #0001;
-    -fx-border-width: 2 0 2 0;
+    -fx-border-width: 1 0 1 0;
 }
 
 .repository .content {
@@ -762,22 +762,24 @@
     -fx-background-color: #fff;
     -fx-background-radius: 2;
     -fx-effect: dropshadow(gaussian, #0002, 4, 0, 0, 1);
-    -fx-padding: 16;
+    -fx-padding: 12;
+    -fx-hgap: 6;
+    -fx-vgap: 6;
 }
 
 .image-info .label {
-    -fx-font-size: 0.9em;
+    -fx-font-size: 0.85em;
 }
 
 .image-info .title {
-    -fx-font-size: 14;
+    -fx-font-size: 1em;
     -fx-font-family: "Open Sans SemiBold";
 }
 
 .image-info .text-field {
-    -fx-padding: 0.15em 0.4em;
+    -fx-padding: 0.2em;
     -fx-background-radius: 2 1;
-    -fx-font-size: 0.9em;
+    -fx-font-size: 0.85em;
     -fx-text-fill: #666;
 }
 
@@ -786,8 +788,8 @@
 }
 
 .image-info .button {
-    -fx-padding: 0.2em 0.6em;
-    -fx-font-size: 0.9em;
+    -fx-padding: 0.25em 0.4em;
+    -fx-font-size: 0.85em;
 }
 
 .image-info .button .icon {

@@ -209,11 +209,11 @@
                                                          </GridPane.margin>
                                                       </Label>
                                                       <Label text="Name:" GridPane.rowIndex="1" />
-                                                      <TextField fx:id="fileNameTextField" editable="false" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="1" />
-                                                      <TextField fx:id="fileSizeTextField" editable="false" prefColumnCount="6" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                                                      <TextField fx:id="filePathTextField" editable="false" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="2" />
-                                                      <TextField fx:id="filePageNumberTextField" editable="false" prefColumnCount="6" GridPane.columnIndex="3" GridPane.rowIndex="4" />
-                                                      <TextField fx:id="fileDimensionTextField" editable="false" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="3" />
+                                                      <TextField fx:id="fileNameTextField" editable="false" prefColumnCount="20" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="1" />
+                                                      <TextField fx:id="fileSizeTextField" editable="false" prefColumnCount="8" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                                      <TextField fx:id="filePathTextField" editable="false" prefColumnCount="20" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="2" />
+                                                      <TextField fx:id="filePageNumberTextField" editable="false" prefColumnCount="8" GridPane.columnIndex="3" GridPane.rowIndex="4" />
+                                                      <TextField fx:id="fileDimensionTextField" editable="false" prefColumnCount="20" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="3" />
                                                       <Button fx:id="imageFileRemoveButton" mnemonicParsing="false" text="Remove" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="5">
                                                          <graphic>
                                                             <Region>
