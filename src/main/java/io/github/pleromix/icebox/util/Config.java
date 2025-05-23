@@ -2,7 +2,6 @@ package io.github.pleromix.icebox.util;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,8 +16,8 @@ import java.util.Properties;
 public final class Config {
 
     private static final Logger logger = LoggerFactory.getLogger(Config.class);
-    private static final String APP_ID = "io.github.pleromix.icebox";
-    private static final Path CONFIG_PATH = Paths.get(FileUtils.getTempDirectory().getPath(), APP_ID + ".properties");
+    private static final String APP_ID = "io.github.pleromix.IceBox";
+    private static final Path CONFIG_PATH = Paths.get(System.getProperty("user.home"), ".var", "app", APP_ID, APP_ID + ".properties");
 
     private static Config instance;
 
